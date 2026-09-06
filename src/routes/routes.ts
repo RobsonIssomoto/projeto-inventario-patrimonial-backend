@@ -1,16 +1,14 @@
 import { Router } from "express";
-//import usuarioRoutes from "../modules/usuario/usuario.routes.js";
-//import habilidadeRoutes from "../modules/habilidade/habilidade.routes.js";
+import patrimonioRoutes from "../modules/patrimonio/patrimonio.routes.js";
 
-const router = Router();
+const routes = Router();
 
-router.get("/teste", (request, response) => {
+routes.get("/teste", (request, response) => {
   return response.status(200).json({
     message: "Endpoint de teste funcionando",
   });
 });
 
-//router.use("/usuarios", usuarioRoutes);
-//router.use("/habilidades", habilidadeRoutes);
+routes.use("/patrimonios", patrimonioRoutes);
 
-export default router;
+export default routes;

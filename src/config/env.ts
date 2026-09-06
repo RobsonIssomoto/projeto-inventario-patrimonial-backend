@@ -1,11 +1,13 @@
 import "dotenv/config";
 
 //Função que valida e retorna variável estritamente uma string
-function obterVariavelAmbiente(nomeDaVariavel: string): string {
-  const valor = process.env[nomeDaVariavel];
+function obterVariavelAmbiente(nomeDaVariavel: string, valorPadrao?: string): string {
+  const valor = process.env[nomeDaVariavel] || valorPadrao;
+
   if (!valor) {
     throw new Error(`ERRO CRÍTICO: A variável de ambiente ${nomeDaVariavel} não foi configurada no .env`);
   }
+
   return valor;
 }
 
@@ -13,5 +15,5 @@ function obterVariavelAmbiente(nomeDaVariavel: string): string {
 export const ENV = {
   //O TypeScript tem 100% de certeza que as variáveis são strings
   MONGO_URI: obterVariavelAmbiente("MONGO_URI"),
-  PORT: obterVariavelAmbiente("PORT") || "3000",
+  PORT: obterVariavelAmbiente("PORT", "3000"),
 };

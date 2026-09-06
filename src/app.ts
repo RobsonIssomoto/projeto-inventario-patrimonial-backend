@@ -2,7 +2,6 @@ import express from "express";
 import type { Express } from "express";
 import cors from "cors";
 import routes from "./routes/routes.js";
-import database from "./config/database.js";
 
 class App {
   public server: Express;

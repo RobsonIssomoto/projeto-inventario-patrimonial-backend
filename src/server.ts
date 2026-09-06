@@ -1,9 +1,6 @@
-import express from "express";
 import app from "./app.js";
 import { ENV } from "./config/env.js";
 import databaseMongo from "./config/database.js";
-
-app.use(express.json());
 
 const PORT = ENV.PORT || 3000;
 
