@@ -41,8 +41,8 @@ class PatrimonioController {
         mensagem: "Patrimônio cadastrado com sucesso!",
         dados: novoPatrimonio,
       });
-    } catch (error: any) {
-      if (error.code === 11000) {
+    } catch (error: unknown) {
+      if (typeof error === "object" && error !== null && "code" in error && error.code === 11000) {
         return response.status(400).json({ erro: "Número de patrimônio já cadastrado no sistema." });
       }
 
