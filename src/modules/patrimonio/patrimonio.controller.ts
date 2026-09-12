@@ -24,6 +24,14 @@ class PatrimonioController {
         return response.status(400).json({ erro: "A sala é obrigatória." });
       }
 
+      if (status && !["conferido", "pendente", "nao_localizado"].includes(status)) {
+        return response.status(400).json({ erro: "Status inválido." });
+      }
+
+      if (estadoConservacao && !["novo", "bom", "regular", "ruim", "inservivel"].includes(estadoConservacao)) {
+        return response.status(400).json({ erro: "Estado de conservação inválido." });
+      }
+
       const dadosValidados: ICreatePatrimonioDTO = {
         numeroPatrimonio: numeroPatrimonio.trim(),
         descricao: descricao.trim(),

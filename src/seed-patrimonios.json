@@ -1,0 +1,102 @@
+[
+  {
+    "numeroPatrimonio": "PAT-001",
+    "descricao": "Notebook Dell Latitude 5420",
+    "setor": "TI",
+    "sala": "101",
+    "tipoObjeto": "Notebook",
+    "status": "conferido",
+    "estadoConservacao": "bom",
+    "observacoes": "Equipamento em bom estado de conservação"
+  },
+  {
+    "numeroPatrimonio": "PAT-002",
+    "descricao": "Monitor LG 24 polegadas",
+    "setor": "TI",
+    "sala": "101",
+    "tipoObjeto": "Monitor",
+    "status": "conferido",
+    "estadoConservacao": "novo",
+    "observacoes": ""
+  },
+  {
+    "numeroPatrimonio": "PAT-003",
+    "descricao": "Cadeira de escritório ergonômica",
+    "setor": "RH",
+    "sala": "205",
+    "tipoObjeto": "Móvel",
+    "status": "pendente",
+    "estadoConservacao": "bom",
+    "observacoes": ""
+  },
+  {
+    "numeroPatrimonio": "PAT-004",
+    "descricao": "Mesa de escritório em L",
+    "setor": "RH",
+    "sala": "205",
+    "tipoObjeto": "Móvel",
+    "status": "conferido",
+    "estadoConservacao": "regular",
+    "observacoes": "Pequenos arranhões na superfície"
+  },
+  {
+    "numeroPatrimonio": "PAT-005",
+    "descricao": "Impressora HP LaserJet Pro",
+    "setor": "Administrativo",
+    "sala": "302",
+    "tipoObjeto": "Impressora",
+    "status": "pendente",
+    "estadoConservacao": "bom",
+    "observacoes": ""
+  },
+  {
+    "numeroPatrimonio": "PAT-006",
+    "descricao": "Projetor Epson PowerLite",
+    "setor": "TI",
+    "sala": "101",
+    "tipoObjeto": "Projetor",
+    "status": "nao_localizado",
+    "estadoConservacao": "regular",
+    "observacoes": "Não encontrado na última conferência"
+  },
+  {
+    "numeroPatrimonio": "PAT-007",
+    "descricao": "Teclado mecânico Logitech",
+    "setor": "TI",
+    "sala": "102",
+    "tipoObjeto": "Periférico",
+    "status": "conferido",
+    "estadoConservacao": "novo",
+    "observacoes": ""
+  },
+  {
+    "numeroPatrimonio": "PAT-008",
+    "descricao": "Mouse sem fio Microsoft",
+    "setor": "TI",
+    "sala": "102",
+    "tipoObjeto": "Periférico",
+    "status": "conferido",
+    "estadoConservacao": "bom",
+    "observacoes": ""
+  },
+  {
+    "numeroPatrimonio": "PAT-009",
+    "descricao": "Servidor Dell PowerEdge",
+    "setor": "TI",
+    "sala": "110",
+    "tipoObjeto": "Servidor",
+    "status": "pendente",
+    "estadoConservacao": "bom",
+    "observacoes": "Equipamento de crítico"
+  },
+  {
+    "numeroPatrimonio": "PAT-010",
+    "descricao": "Arquivo de aço 4 gavetas",
+    "setor": "Administrativo",
+    "sala": "302",
+    "tipoObjeto": "Móvel",
+    "status": "conferido",
+    "estadoConservacao": "regular",
+    "observacoes": ""
+  }
+]

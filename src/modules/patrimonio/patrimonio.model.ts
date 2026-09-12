@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import type { IPatrimonio, StatusPatrimonio, EstadoConservacao } from "./patrimonio.types.js";
+import type { IPatrimonio } from "./patrimonio.types.js";
 
 const patrimonioSchema = new Schema<IPatrimonio>(
   {

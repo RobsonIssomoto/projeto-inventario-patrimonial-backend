@@ -1,9 +1,11 @@
+export type PerfilUsuario = "operador" | "administrador";
+
 export interface IUsuario {
   uid: string;
   nome: string;
   email: string;
   setor: string;
-  perfil: "operador" | "administrador";
+  perfil: PerfilUsuario;
   ativo: boolean;
   createdAt?: Date;
   updatedAt?: Date;
@@ -14,6 +16,6 @@ export interface ICreateUsuarioDTO {
   nome: string;
   email: string;
   setor: string;
-  perfil: "operador" | "administrador";
+  perfil: PerfilUsuario;
   ativo?: boolean;
 }
