@@ -5,9 +5,9 @@ export type EstadoConservacao = "novo" | "bom" | "regular" | "ruim" | "inservive
 export interface IPatrimonio {
   numeroPatrimonio: string;
   descricao: string;
-  setor: string;
+  secretaria: string;
   sala: string;
-  tipoObjeto?: string;
+  categoria: string;
   status: StatusPatrimonio;
   estadoConservacao: EstadoConservacao;
   observacoes?: string;
@@ -18,9 +18,9 @@ export interface IPatrimonio {
 export interface ICreatePatrimonioDTO {
   numeroPatrimonio: string;
   descricao: string;
-  setor: string;
+  secretaria: string;
   sala: string;
-  tipoObjeto?: string;
+  categoria?: string;
   status?: StatusPatrimonio;
   estadoConservacao?: EstadoConservacao;
   observacoes?: string;
@@ -28,9 +28,9 @@ export interface ICreatePatrimonioDTO {
 
 export interface IUpdatePatrimonioDTO {
   descricao?: string;
-  setor?: string;
+  secretaria?: string;
   sala?: string;
-  tipoObjeto?: string;
+  categoria?: string;
   status?: StatusPatrimonio;
   estadoConservacao?: EstadoConservacao;
   observacoes?: string;

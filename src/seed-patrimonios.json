@@ -2,9 +2,9 @@
   {
     "numeroPatrimonio": "PAT-001",
     "descricao": "Notebook Dell Latitude 5420",
-    "setor": "TI",
+    "secretaria": "TI",
     "sala": "101",
-    "tipoObjeto": "Notebook",
+    "categoria": "Notebook",
     "status": "conferido",
     "estadoConservacao": "bom",
     "observacoes": "Equipamento em bom estado de conservação"
@@ -12,9 +12,9 @@
   {
     "numeroPatrimonio": "PAT-002",
     "descricao": "Monitor LG 24 polegadas",
-    "setor": "TI",
+    "secretaria": "TI",
     "sala": "101",
-    "tipoObjeto": "Monitor",
+    "categoria": "Monitor",
     "status": "conferido",
     "estadoConservacao": "novo",
     "observacoes": ""
@@ -22,9 +22,9 @@
   {
     "numeroPatrimonio": "PAT-003",
     "descricao": "Cadeira de escritório ergonômica",
-    "setor": "RH",
+    "secretaria": "RH",
     "sala": "205",
-    "tipoObjeto": "Móvel",
+    "categoria": "Móvel",
     "status": "pendente",
     "estadoConservacao": "bom",
     "observacoes": ""
@@ -32,9 +32,9 @@
   {
     "numeroPatrimonio": "PAT-004",
     "descricao": "Mesa de escritório em L",
-    "setor": "RH",
+    "secretaria": "RH",
     "sala": "205",
-    "tipoObjeto": "Móvel",
+    "categoria": "Móvel",
     "status": "conferido",
     "estadoConservacao": "regular",
     "observacoes": "Pequenos arranhões na superfície"
@@ -42,9 +42,9 @@
   {
     "numeroPatrimonio": "PAT-005",
     "descricao": "Impressora HP LaserJet Pro",
-    "setor": "Administrativo",
+    "secretaria": "Administrativo",
     "sala": "302",
-    "tipoObjeto": "Impressora",
+    "categoria": "Impressora",
     "status": "pendente",
     "estadoConservacao": "bom",
     "observacoes": ""
@@ -52,9 +52,9 @@
   {
     "numeroPatrimonio": "PAT-006",
     "descricao": "Projetor Epson PowerLite",
-    "setor": "TI",
+    "secretaria": "TI",
     "sala": "101",
-    "tipoObjeto": "Projetor",
+    "categoria": "Projetor",
     "status": "nao_localizado",
     "estadoConservacao": "regular",
     "observacoes": "Não encontrado na última conferência"
@@ -62,9 +62,9 @@
   {
     "numeroPatrimonio": "PAT-007",
     "descricao": "Teclado mecânico Logitech",
-    "setor": "TI",
+    "secretaria": "TI",
     "sala": "102",
-    "tipoObjeto": "Periférico",
+    "categoria": "Periférico",
     "status": "conferido",
     "estadoConservacao": "novo",
     "observacoes": ""
@@ -72,9 +72,9 @@
   {
     "numeroPatrimonio": "PAT-008",
     "descricao": "Mouse sem fio Microsoft",
-    "setor": "TI",
+    "secretaria": "TI",
     "sala": "102",
-    "tipoObjeto": "Periférico",
+    "categoria": "Periférico",
     "status": "conferido",
     "estadoConservacao": "bom",
     "observacoes": ""
@@ -82,9 +82,9 @@
   {
     "numeroPatrimonio": "PAT-009",
     "descricao": "Servidor Dell PowerEdge",
-    "setor": "TI",
+    "secretaria": "TI",
     "sala": "110",
-    "tipoObjeto": "Servidor",
+    "categoria": "Servidor",
     "status": "pendente",
     "estadoConservacao": "bom",
     "observacoes": "Equipamento de crítico"
@@ -92,9 +92,9 @@
   {
     "numeroPatrimonio": "PAT-010",
     "descricao": "Arquivo de aço 4 gavetas",
-    "setor": "Administrativo",
+    "secretaria": "Administrativo",
     "sala": "302",
-    "tipoObjeto": "Móvel",
+    "categoria": "Móvel",
     "status": "conferido",
     "estadoConservacao": "regular",
     "observacoes": ""

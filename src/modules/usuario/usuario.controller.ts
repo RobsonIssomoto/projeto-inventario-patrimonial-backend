@@ -5,7 +5,7 @@ import type { ICreateUsuarioDTO } from "./usuario.types.js";
 class UsuarioController {
   public async create(request: Request, response: Response): Promise<Response> {
     try {
-      const { uid, nome, email, setor, perfil, ativo } = request.body;
+      const { uid, nome, email, secretaria, perfil, ativo } = request.body;
 
       if (!uid || typeof uid !== "string") {
         return response.status(400).json({
@@ -25,9 +25,9 @@ class UsuarioController {
         });
       }
 
-      if (!setor || typeof setor !== "string") {
+      if (!secretaria || typeof secretaria !== "string") {
         return response.status(400).json({
-          erro: "O setor é obrigatório.",
+          erro: "O secretaria é obrigatório.",
         });
       }
 
@@ -47,7 +47,7 @@ class UsuarioController {
         uid: uid.trim(),
         nome: nome.trim(),
         email: email.trim().toLowerCase(),
-        setor: setor.trim(),
+        secretaria: secretaria.trim(),
         perfil,
         ativo: ativo ?? true,
       };

@@ -19,7 +19,7 @@ const movimentacaoSchema = new Schema<IMovimentacao>(
       enum: ["conferencia", "atualizacao_localizacao", "transferencia"],
       required: true,
     },
-    setor: {
+    secretaria: {
       type: String,
       required: true,
       trim: true,
@@ -47,10 +47,10 @@ const movimentacaoSchema = new Schema<IMovimentacao>(
         type: String,
         trim: true,
       },
-      setorOrigem: {
+      secretariaOrigem: {
         type: String,
       },
-      setorDestino: {
+      secretariaDestino: {
         type: String,
       },
       salaOrigem: {

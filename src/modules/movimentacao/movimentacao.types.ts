@@ -7,15 +7,15 @@ export interface IMovimentacao {
   usuario: Types.ObjectId;
   patrimonio: Types.ObjectId;
   tipo: TipoMovimentacao;
-  setor: string;
+  secretaria: string;
   sala: string;
   dataHora: Date;
   dados: {
     status?: StatusPatrimonio;
     estadoConservacao?: EstadoConservacao;
     observacoes?: string;
-    setorOrigem?: string;
-    setorDestino?: string;
+    secretariaOrigem?: string;
+    secretariaDestino?: string;
     salaOrigem?: string;
     salaDestino?: string;
     motivo?: string;
@@ -28,15 +28,15 @@ export interface ICreateMovimentacaoDTO {
   usuario: Types.ObjectId;
   patrimonio: Types.ObjectId;
   tipo: TipoMovimentacao;
-  setor: string;
+  secretaria: string;
   sala: string;
   dataHora: Date;
   dados: {
     status?: StatusPatrimonio;
     estadoConservacao?: EstadoConservacao;
     observacoes?: string;
-    setorOrigem?: string;
-    setorDestino?: string;
+    secretariaOrigem?: string;
+    secretariaDestino?: string;
     salaOrigem?: string;
     salaDestino?: string;
     motivo?: string;

@@ -20,9 +20,9 @@ const usuarioSchema = new Schema<IUsuario>(
       unique: true,
       trim: true,
     },
-    setor: {
+    secretaria: {
       type: String,
-      required: [true, "O setor é obrigatório"],
+      required: [true, "O secretaria é obrigatório"],
     },
     perfil: {
       type: String,

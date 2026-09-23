@@ -5,7 +5,7 @@ import type { ICreatePatrimonioDTO, IUpdatePatrimonioDTO } from "./patrimonio.ty
 class PatrimonioController {
   public async create(request: Request, response: Response): Promise<Response> {
     try {
-      const { numeroPatrimonio, descricao, setor, sala, tipoObjeto, status, estadoConservacao, observacoes } =
+      const { numeroPatrimonio, descricao, secretaria, sala, categoria, status, estadoConservacao, observacoes } =
         request.body;
 
       if (!numeroPatrimonio || typeof numeroPatrimonio !== "string") {
@@ -16,8 +16,8 @@ class PatrimonioController {
         return response.status(400).json({ erro: "A descrição é obrigatória e deve ter no mínimo 3 caracteres." });
       }
 
-      if (!setor || typeof setor !== "string") {
-        return response.status(400).json({ erro: "O setor é obrigatório." });
+      if (!secretaria || typeof secretaria !== "string") {
+        return response.status(400).json({ erro: "A secretaria é obrigatória." });
       }
 
       if (!sala || typeof sala !== "string") {
@@ -35,9 +35,9 @@ class PatrimonioController {
       const dadosValidados: ICreatePatrimonioDTO = {
         numeroPatrimonio: numeroPatrimonio.trim(),
         descricao: descricao.trim(),
-        setor: setor.trim(),
+        secretaria: secretaria.trim(),
         sala: sala.trim(),
-        tipoObjeto,
+        categoria,
         status,
         estadoConservacao,
         observacoes,
@@ -61,7 +61,7 @@ class PatrimonioController {
 
   public async listar(request: Request, response: Response): Promise<Response> {
     try {
-      const { busca, setor, sala, tipoObjeto, status, ordenarPor } = request.query;
+      const { busca, secretaria, sala, categoria, status, ordenarPor } = request.query;
 
       const filtros: Record<string, any> = {};
 
@@ -72,9 +72,9 @@ class PatrimonioController {
         ];
       }
 
-      if (setor) filtros.setor = String(setor);
+      if (secretaria) filtros.secretaria = String(secretaria);
       if (sala) filtros.sala = String(sala);
-      if (tipoObjeto) filtros.tipoObjeto = String(tipoObjeto);
+      if (categoria) filtros.categoria = String(categoria);
       if (status) filtros.status = String(status);
 
       let ordenacao: Record<string, 1 | -1> = { createdAt: -1 };

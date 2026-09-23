@@ -6,7 +6,7 @@ import type { ICreateMovimentacaoDTO, TipoMovimentacao } from "./movimentacao.ty
 class MovimentacaoController {
   public async create(request: Request, response: Response): Promise<Response> {
     try {
-      const { usuarioId, patrimonioId, tipo, setor, sala, dataHora, dados } = request.body;
+      const { usuarioId, patrimonioId, tipo, secretaria, sala, dataHora, dados } = request.body;
 
       if (!usuarioId || typeof usuarioId !== "string") {
         return response.status(400).json({
@@ -26,9 +26,9 @@ class MovimentacaoController {
         });
       }
 
-      if (!setor || typeof setor !== "string") {
+      if (!secretaria || typeof secretaria !== "string") {
         return response.status(400).json({
-          erro: "O setor é obrigatório.",
+          erro: "O secretaria é obrigatório.",
         });
       }
 
@@ -97,9 +97,9 @@ class MovimentacaoController {
       }
 
       if (tipo === "atualizacao_localizacao" || tipo === "transferencia") {
-        if (!dados.setorOrigem || typeof dados.setorOrigem !== "string") {
+        if (!dados.secretariaOrigem || typeof dados.secretariaOrigem !== "string") {
           return response.status(400).json({
-            erro: "O setor de origem é obrigatório.",
+            erro: "O secretaria de origem é obrigatório.",
           });
         }
 
@@ -109,9 +109,9 @@ class MovimentacaoController {
           });
         }
 
-        if (!dados.setorDestino || typeof dados.setorDestino !== "string") {
+        if (!dados.secretariaDestino || typeof dados.secretariaDestino !== "string") {
           return response.status(400).json({
-            erro: "O setor de destino é obrigatório.",
+            erro: "O secretaria de destino é obrigatório.",
           });
         }
 
@@ -122,7 +122,7 @@ class MovimentacaoController {
         }
 
         if (
-          dados.setorOrigem.trim() === dados.setorDestino.trim() &&
+          dados.secretariaOrigem.trim() === dados.secretariaDestino.trim() &&
           dados.salaOrigem.trim() === dados.salaDestino.trim()
         ) {
           return response.status(400).json({
@@ -146,15 +146,15 @@ class MovimentacaoController {
         usuario,
         patrimonio,
         tipo: tipo as TipoMovimentacao,
-        setor: setor.trim(),
+        secretaria: secretaria.trim(),
         sala: sala.trim(),
         dataHora: data,
         dados: {
           status: dados.status,
           estadoConservacao: dados.estadoConservacao,
           observacoes: typeof dados.observacoes === "string" ? dados.observacoes.trim() : undefined,
-          setorOrigem: typeof dados.setorOrigem === "string" ? dados.setorOrigem.trim() : undefined,
-          setorDestino: typeof dados.setorDestino === "string" ? dados.setorDestino.trim() : undefined,
+          secretariaOrigem: typeof dados.secretariaOrigem === "string" ? dados.secretariaOrigem.trim() : undefined,
+          secretariaDestino: typeof dados.secretariaDestino === "string" ? dados.secretariaDestino.trim() : undefined,
           salaOrigem: typeof dados.salaOrigem === "string" ? dados.salaOrigem.trim() : undefined,
           salaDestino: typeof dados.salaDestino === "string" ? dados.salaDestino.trim() : undefined,
           motivo: typeof dados.motivo === "string" ? dados.motivo.trim() : undefined,

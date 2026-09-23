@@ -15,9 +15,9 @@ const patrimonioSchema = new Schema<IPatrimonio>(
       required: [true, "A descrição do item é obrigatória"],
       trim: true,
     },
-    setor: {
+    secretaria: {
       type: String,
-      required: [true, "O setor responsável é obrigatório"],
+      required: [true, "A secretaria responsável é obrigatória"],
       trim: true,
       index: true,
     },
@@ -26,7 +26,7 @@ const patrimonioSchema = new Schema<IPatrimonio>(
       required: [true, "A sala/localização física é obrigatória"],
       trim: true,
     },
-    tipoObjeto: {
+    categoria: {
       type: String,
       trim: true,
     },
