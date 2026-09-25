@@ -1,12 +1,23 @@
 import type { Request, Response } from "express";
 import { Types } from "mongoose";
 import movimentacaoService from "./movimentacao.service.js";
-import type { ICreateMovimentacaoDTO, TipoMovimentacao } from "./movimentacao.types.js";
+import type {
+  ICreateMovimentacaoDTO,
+  TipoMovimentacao,
+} from "./movimentacao.types.js";
 
 class MovimentacaoController {
   public async create(request: Request, response: Response): Promise<Response> {
     try {
-      const { usuarioId, patrimonioId, tipo, secretaria, sala, dataHora, dados } = request.body;
+      const {
+        usuarioId,
+        patrimonioId,
+        tipo,
+        secretaria,
+        sala,
+        dataHora,
+        dados,
+      } = request.body;
 
       if (!usuarioId || typeof usuarioId !== "string") {
         return response.status(400).json({
@@ -20,7 +31,11 @@ class MovimentacaoController {
         });
       }
 
-      if (tipo !== "conferencia" && tipo !== "atualizacao_localizacao" && tipo !== "transferencia") {
+      if (
+        tipo !== "conferencia" &&
+        tipo !== "atualizacao_localizacao" &&
+        tipo !== "transferencia"
+      ) {
         return response.status(400).json({
           erro: "Tipo de movimentação inválido.",
         });
@@ -71,7 +86,11 @@ class MovimentacaoController {
       }
 
       if (tipo === "conferencia") {
-        if (dados.status !== "conferido" && dados.status !== "pendente" && dados.status !== "nao_localizado") {
+        if (
+          dados.status !== "conferido" &&
+          dados.status !== "pendente" &&
+          dados.status !== "nao_localizado"
+        ) {
           return response.status(400).json({
             erro: "Status inválido para conferência.",
           });
@@ -89,7 +108,10 @@ class MovimentacaoController {
           });
         }
 
-        if (dados.observacoes !== undefined && typeof dados.observacoes !== "string") {
+        if (
+          dados.observacoes !== undefined &&
+          typeof dados.observacoes !== "string"
+        ) {
           return response.status(400).json({
             erro: "Observações devem ser texto.",
           });
@@ -97,9 +119,12 @@ class MovimentacaoController {
       }
 
       if (tipo === "atualizacao_localizacao" || tipo === "transferencia") {
-        if (!dados.secretariaOrigem || typeof dados.secretariaOrigem !== "string") {
+        if (
+          !dados.secretariaOrigem ||
+          typeof dados.secretariaOrigem !== "string"
+        ) {
           return response.status(400).json({
-            erro: "O secretaria de origem é obrigatório.",
+            erro: "A secretaria de origem é obrigatória.",
           });
         }
 
@@ -109,9 +134,12 @@ class MovimentacaoController {
           });
         }
 
-        if (!dados.secretariaDestino || typeof dados.secretariaDestino !== "string") {
+        if (
+          !dados.secretariaDestino ||
+          typeof dados.secretariaDestino !== "string"
+        ) {
           return response.status(400).json({
-            erro: "O secretaria de destino é obrigatório.",
+            erro: "A secretaria de destino é obrigatória.",
           });
         }
 
@@ -131,7 +159,11 @@ class MovimentacaoController {
         }
 
         if (tipo === "transferencia") {
-          if (!dados.motivo || typeof dados.motivo !== "string" || dados.motivo.trim().length === 0) {
+          if (
+            !dados.motivo ||
+            typeof dados.motivo !== "string" ||
+            dados.motivo.trim().length === 0
+          ) {
             return response.status(400).json({
               erro: "O motivo é obrigatório para transferência.",
             });
@@ -152,12 +184,28 @@ class MovimentacaoController {
         dados: {
           status: dados.status,
           estadoConservacao: dados.estadoConservacao,
-          observacoes: typeof dados.observacoes === "string" ? dados.observacoes.trim() : undefined,
-          secretariaOrigem: typeof dados.secretariaOrigem === "string" ? dados.secretariaOrigem.trim() : undefined,
-          secretariaDestino: typeof dados.secretariaDestino === "string" ? dados.secretariaDestino.trim() : undefined,
-          salaOrigem: typeof dados.salaOrigem === "string" ? dados.salaOrigem.trim() : undefined,
-          salaDestino: typeof dados.salaDestino === "string" ? dados.salaDestino.trim() : undefined,
-          motivo: typeof dados.motivo === "string" ? dados.motivo.trim() : undefined,
+          observacoes:
+            typeof dados.observacoes === "string"
+              ? dados.observacoes.trim()
+              : undefined,
+          secretariaOrigem:
+            typeof dados.secretariaOrigem === "string"
+              ? dados.secretariaOrigem.trim()
+              : undefined,
+          secretariaDestino:
+            typeof dados.secretariaDestino === "string"
+              ? dados.secretariaDestino.trim()
+              : undefined,
+          salaOrigem:
+            typeof dados.salaOrigem === "string"
+              ? dados.salaOrigem.trim()
+              : undefined,
+          salaDestino:
+            typeof dados.salaDestino === "string"
+              ? dados.salaDestino.trim()
+              : undefined,
+          motivo:
+            typeof dados.motivo === "string" ? dados.motivo.trim() : undefined,
         },
       };
 
@@ -176,12 +224,41 @@ class MovimentacaoController {
     }
   }
 
-  //   public async findAll(request: Request, response: Response): Promise<Response> {
-  //     try{
+  public async findAll(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    try {
+      const {patrimonio, usuario, tipo, secretaria, sala, ordenarPor } =
+        request.query;
 
-  //     }catch(){
+      const filtros: Record<string, any> = {};
 
-  //     }}
+
+      if (patrimonio) filtros.patrimonio = String(patrimonio);
+      if(usuario) filtros.usuario = String(usuario);
+      if (tipo) filtros.tipo = String(tipo);
+      if (secretaria) filtros.secretaria = String(secretaria);
+      if (sala) filtros.sala = String(sala);
+
+      let ordenacao: Record<string, 1 | -1> = { dataHora: -1 };
+
+      if (ordenarPor === "antigos") {
+        ordenacao = { dataHora: 1 };
+      } else if (ordenarPor === "numero") {
+        ordenacao = { numeroPatrimonio: 1 };
+      }
+
+      const movimentacoes = await movimentacaoService.findAll(
+        filtros,
+        ordenacao,
+      );
+      return response.status(200).json(movimentacoes);
+    } catch (error) {
+      console.error("Erro ao listar movimentações.", error);
+      return response.status(500).json({ erro: "Erro interno no servidor." });
+    }
+  }
   //   public async findByPatrimonio(request: Request, response: Response): Promise<Response> {
   //     try{
 

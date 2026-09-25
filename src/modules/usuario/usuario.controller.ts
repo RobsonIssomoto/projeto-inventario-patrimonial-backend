@@ -27,7 +27,7 @@ class UsuarioController {
 
       if (!secretaria || typeof secretaria !== "string") {
         return response.status(400).json({
-          erro: "O secretaria é obrigatório.",
+          erro: "A secretaria é obrigatória.",
         });
       }
 

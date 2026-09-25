@@ -17,7 +17,7 @@ class PatrimonioService {
 
   public async update(id: string, data: IUpdatePatrimonioDTO) {
     return await Patrimonio.findByIdAndUpdate(id, data, {
-      new: true,
+      returnDocument: 'after',
       runValidators: true,
     });
   }

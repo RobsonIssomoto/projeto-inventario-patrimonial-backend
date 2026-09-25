@@ -12,6 +12,6 @@ routes.get("/teste", (request, response) => {
 });
 
 routes.use("/patrimonios", patrimonioRoutes);
-routes.use("/usuario", usuarioRoutes);
+routes.use("/usuarios", usuarioRoutes);
 routes.use("/movimentacoes", movimentacaoRoutes);
 export default routes;
