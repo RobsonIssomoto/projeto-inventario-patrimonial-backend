@@ -1,4 +1,5 @@
 import { Router } from "express";
+import secretariaRoutes from "../modules/secretaria/secretaria.routes.js";
 import patrimonioRoutes from "../modules/patrimonio/patrimonio.routes.js";
 import usuarioRoutes from "../modules/usuario/usuario.routes.js";
 import movimentacaoRoutes from "../modules/movimentacao/movimentacao.routes.js";
@@ -11,6 +12,8 @@ routes.get("/teste", (request, response) => {
   });
 });
 
+//routes.use("/sala", salaRoutes);
+routes.use("secretarias", secretariaRoutes);
 routes.use("/patrimonios", patrimonioRoutes);
 routes.use("/usuarios", usuarioRoutes);
 routes.use("/movimentacoes", movimentacaoRoutes);
