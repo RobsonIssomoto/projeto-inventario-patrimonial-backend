@@ -18,7 +18,7 @@ class SecretariaController {
 
       return response.status(200).json(secretarias);
     } catch (error) {
-      return response.status(500).json({ message: "Erro ao listar secretarias" });
+      return response.status(500).json({ message: "Erro ao listar secretarias." });
     }
   }
 
@@ -33,7 +33,7 @@ class SecretariaController {
       return response.status(200).json(secretaria);
     } catch (error) {
       return response.status(500).json({
-        message: "Erro ao buscar secretaria",
+        message: "Erro ao buscar secretaria.",
       });
     }
   }
@@ -44,35 +44,37 @@ class SecretariaController {
 
       if (!secretaria) {
         return response.status(404).json({
-          message: "Secretaria não encontrada",
+          message: "Secretaria não encontrada.",
         });
       }
 
       return response.status(200).json(secretaria);
     } catch (error) {
       return response.status(400).json({
-        message: "Erro ao atualizar secretaria",
+        message: "Erro ao atualizar secretaria.",
       });
     }
   }
 
-  public async delete(request: Request, response: Response) {
+  public async deactivate(request: Request, response: Response) {
     try {
       const id = request.params.id as string;
-      const secretaria = await secretariaService.delete(id);
+      const secretaria = await secretariaService.deactivate(id);
 
       if (!secretaria) {
         return response.status(404).json({
-          message: "Secretaria não encontrada",
+          message: "Secretaria não encontrada.",
         });
       }
 
       return response.status(200).json({
-        message: "Secretaria excluída com sucesso",
+        message: "Secretaria desativada com sucesso.",
       });
     } catch (error) {
+      console.error("Erro ao desativar secretaria", error);
+
       return response.status(500).json({
-        message: "Erro ao excluir secretaria",
+        message: "Erro ao desativar secretaria.",
       });
     }
   }

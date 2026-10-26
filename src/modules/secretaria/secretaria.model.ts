@@ -25,6 +25,6 @@ const secretariaSchema = new Schema<ISecretaria>(
   { timestamps: true },
 );
 
-const Secretaria = mongoose.model<ISecretaria>("Secretaria, secretariaSchema");
+const Secretaria = mongoose.model<ISecretaria>("Secretaria", secretariaSchema);
 
 export default Secretaria;

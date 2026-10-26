@@ -1,6 +1,6 @@
 import type { Types } from "mongoose";
 import Secretaria from "./secretaria.model.js";
-import type { ISecretaria, ICreateSecretariaDTO, IUpdateSecretariaDTO } from "./secretaria.types.js";
+import type { ICreateSecretariaDTO, IUpdateSecretariaDTO } from "./secretaria.types.js";
 
 class SecretariaService {
   public async create(data: ICreateSecretariaDTO) {
@@ -20,8 +20,8 @@ class SecretariaService {
     return await Secretaria.findById(id);
   }
 
-  public async delete(id: string) {
-    return await Secretaria.findByIdAndDelete(id);
+  public async deactivate(id: string) {
+    return await Secretaria.findByIdAndUpdate(id, { ativa: false }, { new: true, runValidators: true });
   }
 }
 
