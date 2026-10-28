@@ -16,15 +16,15 @@ const patrimonioSchema = new Schema<IPatrimonio>(
       trim: true,
     },
     secretaria: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: "Secretaria",
       required: [true, "A secretaria responsável é obrigatória"],
-      trim: true,
       index: true,
     },
     sala: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: "Sala",
       required: [true, "A sala/localização física é obrigatória"],
-      trim: true,
     },
     categoria: {
       type: String,
@@ -44,6 +44,11 @@ const patrimonioSchema = new Schema<IPatrimonio>(
     observacoes: {
       type: String,
       trim: true,
+    },
+    ativo: {
+      type: Boolean,
+      default: true,
+      index: true,
     },
   },
   {

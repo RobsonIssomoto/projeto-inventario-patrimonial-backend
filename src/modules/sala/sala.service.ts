@@ -1,4 +1,4 @@
-import Sala from "./sala.model.js";
+import Sala from "../sala/sala.model.js";
 import Secretaria from "../secretaria/secretaria.model.js";
 import type { ICreateSalaDTO, IUpdateSalaDTO } from "./sala.types.js";
 

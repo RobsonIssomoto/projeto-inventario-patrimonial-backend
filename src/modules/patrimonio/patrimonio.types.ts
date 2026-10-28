@@ -1,16 +1,18 @@
-// src/modules/patrimonio/patrimonio.types.ts
+import type { Types } from "mongoose";
+
 export type StatusPatrimonio = "conferido" | "pendente" | "nao_localizado";
 export type EstadoConservacao = "novo" | "bom" | "regular" | "ruim" | "inservivel";
 
 export interface IPatrimonio {
   numeroPatrimonio: string;
   descricao: string;
-  secretaria: string;
-  sala: string;
-  categoria: string;
+  secretaria: Types.ObjectId;
+  sala: Types.ObjectId;
+  categoria?: string;
   status: StatusPatrimonio;
   estadoConservacao: EstadoConservacao;
   observacoes?: string;
+  ativo: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -28,8 +30,6 @@ export interface ICreatePatrimonioDTO {
 
 export interface IUpdatePatrimonioDTO {
   descricao?: string;
-  secretaria?: string;
-  sala?: string;
   categoria?: string;
   status?: StatusPatrimonio;
   estadoConservacao?: EstadoConservacao;

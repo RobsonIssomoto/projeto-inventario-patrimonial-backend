@@ -13,7 +13,7 @@ const salaSchema = new Schema<ISala>(
     },
     secretaria: {
       type: Schema.Types.ObjectId,
-      ref: Secretaria,
+      ref: "Secretaria",
       required: true,
       immutable: true,
       index: true,

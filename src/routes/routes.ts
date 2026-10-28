@@ -13,7 +13,7 @@ routes.get("/teste", (request, response) => {
   });
 });
 
-routes.use("/sala", salaRoutes);
+routes.use("/salas", salaRoutes);
 routes.use("/secretarias", secretariaRoutes);
 routes.use("/patrimonios", patrimonioRoutes);
 routes.use("/usuarios", usuarioRoutes);

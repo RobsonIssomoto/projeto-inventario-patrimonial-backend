@@ -8,6 +8,6 @@ patrimonioRoutes.get("/", patrimonioController.listar);
 patrimonioRoutes.get("/numero/:numero", patrimonioController.findByNumero);
 patrimonioRoutes.put("/:id", patrimonioController.update);
 patrimonioRoutes.patch("/:id", patrimonioController.update);
-patrimonioRoutes.delete("/:id", patrimonioController.delete);
+patrimonioRoutes.delete("/:id", patrimonioController.deactivate);
 
 export default patrimonioRoutes;

@@ -1,0 +1,38 @@
+{
+  "secretarias": [
+    {
+      "nome": "Tecnologia da Informação",
+      "ativa": true
+    },
+    {
+      "nome": "Recursos Humanos",
+      "ativa": true
+    },
+    {
+      "nome": "Administrativo",
+      "ativa": true
+    }
+  ],
+  "salas": [
+    {
+      "nome": "Sala 101",
+      "secretariaNome": "Tecnologia da Informação",
+      "ativa": true
+    },
+    {
+      "nome": "Sala 102",
+      "secretariaNome": "Tecnologia da Informação",
+      "ativa": true
+    },
+    {
+      "nome": "Sala 205",
+      "secretariaNome": "Recursos Humanos",
+      "ativa": true
+    },
+    {
+      "nome": "Sala 302",
+      "secretariaNome": "Administrativo",
+      "ativa": true
+    }
+  ]
+}
