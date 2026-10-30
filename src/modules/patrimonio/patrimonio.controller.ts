@@ -8,6 +8,8 @@ class PatrimonioController {
     try {
       const { numeroPatrimonio, descricao, secretaria, sala, categoria, observacoes } = request.body;
 
+      const usuarioLogado = request.usuario;
+
       if (!numeroPatrimonio || typeof numeroPatrimonio !== "string") {
         return response.status(400).json({ erro: "O número do patrimônio é obrigatório." });
       }
@@ -24,9 +26,21 @@ class PatrimonioController {
         return response.status(400).json({ erro: "A sala é obrigatória." });
       }
 
+      if (!usuarioLogado) {
+        return response.status(401).json({
+          erro: "Usuário não autenticado.",
+        });
+      }
+
       if (!Types.ObjectId.isValid(secretaria)) {
         return response.status(400).json({
           erro: "ID da secretaria inválido.",
+        });
+      }
+
+      if (usuarioLogado.perfil !== "administrador" && !usuarioLogado.secretaria.equals(secretaria)) {
+        return response.status(403).json({
+          erro: "O usuário não pertence à secretaria informada.",
         });
       }
 
@@ -86,6 +100,30 @@ class PatrimonioController {
 
       const filtros: Record<string, any> = {};
 
+      const usuarioLogado = request.usuario;
+
+      if (!usuarioLogado) {
+        return response.status(401).json({
+          erro: "Usuário não autenticado.",
+        });
+      }
+
+      if (usuarioLogado.perfil === "administrador") {
+        if (secretaria) {
+          const secretariaFiltro = Array.isArray(secretaria) ? String(secretaria[0]) : String(secretaria);
+
+          if (!Types.ObjectId.isValid(secretariaFiltro)) {
+            return response.status(400).json({
+              erro: "ID da secretaria inválido.",
+            });
+          }
+
+          filtros.secretaria = new Types.ObjectId(secretariaFiltro);
+        }
+      } else {
+        filtros.secretaria = usuarioLogado.secretaria;
+      }
+
       if (busca) {
         filtros.$or = [
           { numeroPatrimonio: { $regex: String(busca), $options: "i" } },
@@ -94,24 +132,16 @@ class PatrimonioController {
       }
       //validar os IDs e manter como referências
 
-      if (secretaria) {
-        if (!Types.ObjectId.isValid(String(secretaria))) {
-          return response.status(400).json({
-            erro: "ID da secretaria inválido.",
-          });
-        }
-
-        filtros.secretaria = new Types.ObjectId(String(secretaria));
-      }
-
       if (sala) {
-        if (!Types.ObjectId.isValid(String(sala))) {
+        const salaFiltro = Array.isArray(sala) ? String(sala[0]) : String(sala);
+
+        if (!Types.ObjectId.isValid(salaFiltro)) {
           return response.status(400).json({
             erro: "ID da sala inválido.",
           });
         }
 
-        filtros.sala = new Types.ObjectId(String(sala));
+        filtros.sala = new Types.ObjectId(salaFiltro);
       }
 
       if (categoria) filtros.categoria = String(categoria);
@@ -144,9 +174,23 @@ class PatrimonioController {
         });
       }
 
+      const usuarioLogado = request.usuario;
+
+      if (!usuarioLogado) {
+        return response.status(401).json({
+          erro: "Usuário não autenticado.",
+        });
+      }
+
       const patrimonio = await patrimonioService.findByNumero(numero);
 
       if (!patrimonio) {
+        return response.status(404).json({
+          erro: "Patrimônio não localizado no sistema.",
+        });
+      }
+
+      if (usuarioLogado.perfil !== "administrador" && !usuarioLogado.secretaria.equals(patrimonio.secretaria)) {
         return response.status(404).json({
           erro: "Patrimônio não localizado no sistema.",
         });
@@ -171,6 +215,28 @@ class PatrimonioController {
 
       const id = Array.isArray(parametroId) ? parametroId[0] : parametroId;
       const { descricao, categoria, status, estadoConservacao, observacoes } = request.body;
+
+      const usuarioLogado = request.usuario;
+
+      if (!usuarioLogado) {
+        return response.status(401).json({
+          erro: "Usuário não autenticado.",
+        });
+      }
+
+      const patrimonio = await patrimonioService.findById(id);
+
+      if (!patrimonio) {
+        return response.status(404).json({
+          erro: "Patrimônio não encontrado para atualização.",
+        });
+      }
+
+      if (usuarioLogado.perfil !== "administrador" && !usuarioLogado.secretaria.equals(patrimonio.secretaria)) {
+        return response.status(403).json({
+          erro: "O usuário não possui permissão para atualizar este patrimônio.",
+        });
+      }
 
       if (!id || !Types.ObjectId.isValid(id)) {
         return response.status(400).json({
@@ -247,6 +313,28 @@ class PatrimonioController {
       if (!id || !Types.ObjectId.isValid(id)) {
         return response.status(400).json({
           erro: "ID inválido.",
+        });
+      }
+
+      const usuarioLogado = request.usuario;
+
+      if (!usuarioLogado) {
+        return response.status(401).json({
+          erro: "Usuário não autenticado.",
+        });
+      }
+
+      const patrimonio = await patrimonioService.findById(id);
+
+      if (!patrimonio) {
+        return response.status(404).json({
+          erro: "Patrimônio não encontrado para desativação.",
+        });
+      }
+
+      if (usuarioLogado.perfil !== "administrador" && !usuarioLogado.secretaria.equals(patrimonio.secretaria)) {
+        return response.status(403).json({
+          erro: "O usuário não possui permissão para desativar este patrimônio.",
         });
       }
 

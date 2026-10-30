@@ -41,7 +41,10 @@ class PatrimonioService {
 
     return await patrimonio.save();
   }
-
+  public async findById(id: string) {
+    return Patrimonio.findById(id).exec();
+  }
+  
   public async findAll(filtros: any, ordenacao: any) {
     return await Patrimonio.find(filtros).sort(ordenacao);
   }

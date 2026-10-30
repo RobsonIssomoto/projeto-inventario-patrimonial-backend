@@ -1,10 +1,13 @@
 import { Router } from "express";
 import patrimonioController from "./patrimonio.controller.js";
+import { autenticar } from "../usuario/usuario.middleware.js";
 
 const patrimonioRoutes = Router();
 
-patrimonioRoutes.post("/", patrimonioController.create);
-patrimonioRoutes.get("/", patrimonioController.listar);
+patrimonioRoutes.use(autenticar);
+
+patrimonioRoutes.post("/", autenticar, patrimonioController.create);
+patrimonioRoutes.get("/", autenticar, patrimonioController.listar);
 patrimonioRoutes.get("/numero/:numero", patrimonioController.findByNumero);
 patrimonioRoutes.put("/:id", patrimonioController.update);
 patrimonioRoutes.patch("/:id", patrimonioController.update);
