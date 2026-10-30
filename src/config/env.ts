@@ -1,4 +1,5 @@
 import "dotenv/config";
+import path from "path";
 
 //Função que valida e retorna variável estritamente uma string
 function obterVariavelAmbiente(nomeDaVariavel: string, valorPadrao?: string): string {
@@ -16,4 +17,5 @@ export const ENV = {
   //O TypeScript tem 100% de certeza que as variáveis são strings
   MONGO_URI: obterVariavelAmbiente("MONGO_URI"),
   PORT: obterVariavelAmbiente("PORT", "3000"),
+  FIREBASE_SERVICE_ACCOUNT_PATH: path.resolve(obterVariavelAmbiente("FIREBASE_SERVICE_ACCOUNT_PATH")),
 };

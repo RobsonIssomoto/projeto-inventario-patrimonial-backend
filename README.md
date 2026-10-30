@@ -140,7 +140,7 @@ Registra o histórico de conferências, atualizações de localização e transf
 Os endpoints detalhados, cenários de teste manuais e resultados validados no Postman estão documentados em:
 
 ```text
-src/config/teste-api.md
+src/docs/teste-api.md
 ```
 
 ## 🗺️ Status do projeto

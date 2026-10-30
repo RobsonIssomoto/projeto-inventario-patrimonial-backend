@@ -21,12 +21,13 @@ const usuarioSchema = new Schema<IUsuario>(
       trim: true,
     },
     secretaria: {
-      type: String,
-      required: [true, "O secretaria é obrigatório"],
+      type: Schema.Types.ObjectId,
+      ref: "Secretaria",
+      required: [true, "A secretaria é obrigatória"],
     },
     perfil: {
       type: String,
-      enum: ["operador", "administrador"],
+      enum: ["operador", "gerente", "administrador"],
       default: "operador",
       trim: true,
     },
