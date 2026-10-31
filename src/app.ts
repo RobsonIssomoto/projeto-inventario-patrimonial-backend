@@ -2,6 +2,7 @@ import express from "express";
 import type { Express } from "express";
 import cors from "cors";
 import routes from "./routes/routes.js";
+import { ENV } from "./config/env.js";
 
 class App {
   public server: Express;
@@ -13,7 +14,13 @@ class App {
   }
 
   private middleware(): void {
-    this.server.use(cors());
+    this.server.use(
+      cors({
+        origin: ENV.CORS_ORIGIN.split(",").map((origem) => origem.trim()),
+        methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+        allowedHeaders: ["Content-Type", "Authorization"],
+      }),
+    );
     this.server.use(express.json());
     this.server.use(express.urlencoded({ extended: true }));
   }

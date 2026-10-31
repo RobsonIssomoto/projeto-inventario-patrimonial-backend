@@ -17,5 +17,7 @@ export const ENV = {
   //O TypeScript tem 100% de certeza que as variáveis são strings
   MONGO_URI: obterVariavelAmbiente("MONGO_URI"),
   PORT: obterVariavelAmbiente("PORT", "3000"),
+  //Origens permitidas pelo CORS, separadas por vírgula (frontend em desenvolvimento: Vite)
+  CORS_ORIGIN: obterVariavelAmbiente("CORS_ORIGIN", "http://localhost:5173"),
   FIREBASE_SERVICE_ACCOUNT_PATH: path.resolve(obterVariavelAmbiente("FIREBASE_SERVICE_ACCOUNT_PATH")),
 };
