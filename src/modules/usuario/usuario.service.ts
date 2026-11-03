@@ -1,4 +1,4 @@
-import type { IUsuario, ICreateUsuarioDTO } from "./usuario.types.js";
+import type { IUsuario, ICreateUsuarioDTO, IUpdateUsuarioDTO } from "./usuario.types.js";
 import { Usuario } from "./usuario.model.js";
 import { firebaseAuth } from "../../config/firebase.js";
 import { Types } from "mongoose";
@@ -33,6 +33,36 @@ class UsuarioService {
 
   public async findById(uid: string) {
     return await Usuario.findOne({ uid });
+  }
+
+  public async findAll(filtros: Record<string, unknown>) {
+    return await Usuario.find(filtros).sort({ nome: 1 });
+  }
+
+  public async update(uid: string, data: IUpdateUsuarioDTO) {
+    const dados: Record<string, unknown> = {};
+
+    if (data.nome !== undefined) dados.nome = data.nome;
+    if (data.perfil !== undefined) dados.perfil = data.perfil;
+    if (data.ativo !== undefined) dados.ativo = data.ativo;
+
+    if (data.secretaria !== undefined) {
+      const secretaria = await this.validarSecretaria(data.secretaria);
+      dados.secretaria = secretaria._id;
+    }
+
+    const usuario = await Usuario.findOneAndUpdate({ uid }, dados, { new: true, runValidators: true });
+
+    //mantém o Firebase coerente: usuário inativo não consegue gerar novos tokens
+    if (usuario && data.ativo !== undefined) {
+      await firebaseAuth.updateUser(uid, { disabled: !data.ativo });
+    }
+
+    return usuario;
+  }
+
+  public async deactivate(uid: string) {
+    return await this.update(uid, { ativo: false });
   }
 
   private async validarSecretaria(secretariaId: string) {
