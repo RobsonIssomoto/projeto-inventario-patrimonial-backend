@@ -9,7 +9,11 @@ class MovimentacaoService {
   }
 
   public async findAll(filtros: any, ordenacao: any) {
-    return await Movimentacao.find(filtros).sort(ordenacao);
+    // Popula usuário e patrimônio para a listagem exibir nome e número de tombamento.
+    return await Movimentacao.find(filtros)
+      .sort(ordenacao)
+      .populate("usuario", "nome")
+      .populate("patrimonio", "numeroPatrimonio descricao");
   }
 
   public async findByPatrimonio(patrimonioId: Types.ObjectId) {

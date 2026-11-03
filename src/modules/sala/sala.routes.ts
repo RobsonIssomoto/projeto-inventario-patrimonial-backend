@@ -8,5 +8,6 @@ salaRoutes.get("/", salaController.findAll);
 salaRoutes.get("/:id", salaController.findById);
 salaRoutes.put("/:id", salaController.update);
 salaRoutes.patch("/:id/desativar", salaController.deactivate);
+salaRoutes.delete("/:id", salaController.deactivate);
 
 export default salaRoutes;

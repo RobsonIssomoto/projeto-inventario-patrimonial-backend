@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import usuarioService from "./usuario.service.js";
-import type { ICreateUsuarioDTO, PerfilUsuario } from "./usuario.types.js";
+import type { ICreateUsuarioDTO, IUpdateUsuarioDTO, PerfilUsuario } from "./usuario.types.js";
 import { Types } from "mongoose";
 
 class UsuarioController {
@@ -91,6 +91,175 @@ class UsuarioController {
       return response.status(500).json({
         erro: "Erro interno no servidor.",
       });
+    }
+  }
+
+  public async findAll(request: Request, response: Response): Promise<Response> {
+    try {
+      const usuarioLogado = request.usuario;
+
+      if (!usuarioLogado) {
+        return response.status(401).json({ erro: "Usuário não autenticado." });
+      }
+
+      const filtros: Record<string, unknown> = {};
+
+      if (usuarioLogado.perfil === "administrador") {
+        const { secretaria } = request.query;
+
+        if (secretaria !== undefined) {
+          if (typeof secretaria !== "string" || !Types.ObjectId.isValid(secretaria)) {
+            return response.status(400).json({ erro: "ID da secretaria inválido." });
+          }
+
+          filtros.secretaria = new Types.ObjectId(secretaria);
+        }
+      } else {
+        filtros.secretaria = usuarioLogado.secretaria;
+      }
+
+      const usuarios = await usuarioService.findAll(filtros);
+
+      return response.status(200).json(usuarios);
+    } catch (error: unknown) {
+      console.error("Erro ao listar usuários.", error);
+
+      return response.status(500).json({ erro: "Erro interno no servidor." });
+    }
+  }
+
+  public async update(request: Request, response: Response): Promise<Response> {
+    try {
+      const uid = request.params.uid;
+      const usuarioLogado = request.usuario;
+
+      if (!uid || typeof uid !== "string") {
+        return response.status(400).json({ erro: "UID inválido." });
+      }
+
+      if (!usuarioLogado) {
+        return response.status(401).json({ erro: "Usuário não autenticado." });
+      }
+
+      const { nome, secretaria, perfil, ativo } = request.body ?? {};
+      const dados: IUpdateUsuarioDTO = {};
+
+      if (nome !== undefined) {
+        if (typeof nome !== "string" || nome.trim().length < 3) {
+          return response.status(400).json({ erro: "O nome deve ter no mínimo 3 caracteres." });
+        }
+        dados.nome = nome.trim();
+      }
+
+      if (secretaria !== undefined) {
+        if (typeof secretaria !== "string") {
+          return response.status(400).json({ erro: "A secretaria deve ser um texto." });
+        }
+        dados.secretaria = secretaria.trim();
+      }
+
+      if (perfil !== undefined) {
+        const perfisPermitidos: PerfilUsuario[] = ["operador", "gerente", "administrador"];
+
+        if (!perfisPermitidos.includes(perfil)) {
+          return response.status(400).json({ erro: "O perfil deve ser operador, gerente ou administrador." });
+        }
+        dados.perfil = perfil;
+      }
+
+      if (ativo !== undefined) {
+        if (typeof ativo !== "boolean") {
+          return response.status(400).json({ erro: "O campo ativo deve ser booleano." });
+        }
+
+        if (!ativo && uid === usuarioLogado.uid) {
+          return response.status(400).json({ erro: "Você não pode desativar o próprio usuário." });
+        }
+        dados.ativo = ativo;
+      }
+
+      if (Object.keys(dados).length === 0) {
+        return response.status(400).json({ erro: "Informe pelo menos um campo para atualização." });
+      }
+
+      const alvo = await usuarioService.findById(uid);
+
+      if (!alvo) {
+        return response.status(404).json({ erro: "Usuário não encontrado." });
+      }
+
+      if (usuarioLogado.perfil !== "administrador") {
+        if (!usuarioLogado.secretaria.equals(alvo.secretaria)) {
+          return response.status(403).json({ erro: "O usuário não pertence à sua secretaria." });
+        }
+
+        if (dados.perfil === "administrador" || (dados.secretaria && !usuarioLogado.secretaria.equals(dados.secretaria))) {
+          return response.status(403).json({ erro: "Você não tem permissão para esta alteração." });
+        }
+      }
+
+      const usuarioAtualizado = await usuarioService.update(uid, dados);
+
+      return response.status(200).json({
+        mensagem: "Usuário atualizado com sucesso.",
+        dados: usuarioAtualizado,
+      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        const mensagensEsperadas = [
+          "ID da secretaria inválido.",
+          "Secretaria não encontrada.",
+          "Não é possível cadastrar usuário em uma secretaria inativa.",
+        ];
+
+        if (mensagensEsperadas.includes(error.message)) {
+          return response.status(400).json({ erro: error.message });
+        }
+      }
+
+      console.error("Erro ao atualizar usuário.", error);
+
+      return response.status(500).json({ erro: "Erro interno no servidor." });
+    }
+  }
+
+  public async deactivate(request: Request, response: Response): Promise<Response> {
+    try {
+      const uid = request.params.uid;
+      const usuarioLogado = request.usuario;
+
+      if (!uid || typeof uid !== "string") {
+        return response.status(400).json({ erro: "UID inválido." });
+      }
+
+      if (!usuarioLogado) {
+        return response.status(401).json({ erro: "Usuário não autenticado." });
+      }
+
+      if (uid === usuarioLogado.uid) {
+        return response.status(400).json({ erro: "Você não pode desativar o próprio usuário." });
+      }
+
+      const alvo = await usuarioService.findById(uid);
+
+      if (!alvo) {
+        return response.status(404).json({ erro: "Usuário não encontrado." });
+      }
+
+      if (usuarioLogado.perfil !== "administrador" && !usuarioLogado.secretaria.equals(alvo.secretaria)) {
+        return response.status(403).json({ erro: "O usuário não pertence à sua secretaria." });
+      }
+
+      const usuarioDesativado = await usuarioService.deactivate(uid);
+
+      return response.status(200).json({
+        mensagem: "Usuário desativado com sucesso.",
+        dados: usuarioDesativado,
+      });
+    } catch (error: unknown) {
+      console.error("Erro ao desativar usuário.", error);
+
+      return response.status(500).json({ erro: "Erro interno no servidor." });
     }
   }
 
