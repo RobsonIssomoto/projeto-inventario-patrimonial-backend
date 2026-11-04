@@ -1,0 +1,15 @@
+[
+  {
+    "uid": "kFb2jmVAXrXjcGjWOLwLPM4j4I92",
+    "nome": "Novo Administrador",
+    "email": "admin@email.com",
+    "secretaria": { "$oid": "6ae12654fca8d45d62a2fe19" },
+    "perfil": "administrador",
+    "ativo": true,
+    "createdAt": { "$date": "2026-10-30T12:00:00.000Z" },
+    "updatedAt": { "$date": "2026-10-30T12:00:00.000Z" },
+    "__v": 0
+  }
+]
+
+

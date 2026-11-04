@@ -35,6 +35,15 @@ class UsuarioService {
     return await Usuario.findOne({ uid });
   }
 
+  public async findMe(usuarioLogado: IUsuario) {
+    const usuario = await Usuario.findOne({ uid: usuarioLogado.uid }).populate("secretaria", "nome");
+
+    if (!usuario) {
+      throw new Error("Usuário não encontrado.");
+    }
+    return usuario;
+  }
+
   private async validarSecretaria(secretariaId: string) {
     if (!Types.ObjectId.isValid(secretariaId)) {
       throw new Error("ID da secretaria inválido.");

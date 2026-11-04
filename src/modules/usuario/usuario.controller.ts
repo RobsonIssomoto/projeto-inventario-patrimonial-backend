@@ -121,6 +121,34 @@ class UsuarioController {
       });
     }
   }
+
+  public async findMe(request: Request, response: Response): Promise<Response> {
+    try {
+      const usuarioLogado = request.usuario;
+
+      if (!usuarioLogado) {
+        return response.status(401).json({
+          erro: "Usuário não autenticado.",
+        });
+      }
+
+      const usuario = await usuarioService.findMe(usuarioLogado);
+
+      return response.status(200).json(usuario);
+    } catch (error) {
+      if (error instanceof Error && error.message === "Usuário não encontrado.") {
+        return response.status(404).json({
+          erro: error.message,
+        });
+      }
+
+      console.error("Erro ao buscar perfil do usuário.", error);
+
+      return response.status(500).json({
+        erro: "Erro interno no servidor.",
+      });
+    }
+  }
 }
 
 export default new UsuarioController();
