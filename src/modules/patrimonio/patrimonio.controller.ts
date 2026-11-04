@@ -212,16 +212,18 @@ class PatrimonioController {
   public async update(request: Request, response: Response): Promise<Response> {
     try {
       const parametroId = request.params.id;
-
       const id = Array.isArray(parametroId) ? parametroId[0] : parametroId;
+
+      if (!id || !Types.ObjectId.isValid(id)) {
+        return response.status(400).json({ erro: "ID inválido." });
+      }
+
       const { descricao, categoria, status, estadoConservacao, observacoes } = request.body;
 
       const usuarioLogado = request.usuario;
 
       if (!usuarioLogado) {
-        return response.status(401).json({
-          erro: "Usuário não autenticado.",
-        });
+        return response.status(401).json({ erro: "Usuário não autenticado." });
       }
 
       const patrimonio = await patrimonioService.findById(id);
@@ -307,24 +309,24 @@ class PatrimonioController {
   public async deactivate(request: Request, response: Response): Promise<Response> {
     try {
       const parametroId = request.params.id;
-
       const id = Array.isArray(parametroId) ? parametroId[0] : parametroId;
 
       if (!id || !Types.ObjectId.isValid(id)) {
-        return response.status(400).json({
-          erro: "ID inválido.",
-        });
+        return response.status(400).json({ erro: "ID inválido." });
       }
 
       const usuarioLogado = request.usuario;
 
       if (!usuarioLogado) {
-        return response.status(401).json({
-          erro: "Usuário não autenticado.",
-        });
+        return response.status(401).json({ erro: "Usuário não autenticado." });
       }
 
       const patrimonio = await patrimonioService.findById(id);
+      if (!id || !Types.ObjectId.isValid(id)) {
+        return response.status(400).json({
+          erro: "ID inválido.",
+        });
+      }
 
       if (!patrimonio) {
         return response.status(404).json({

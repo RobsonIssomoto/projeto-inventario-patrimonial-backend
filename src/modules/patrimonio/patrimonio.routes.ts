@@ -6,8 +6,8 @@ const patrimonioRoutes = Router();
 
 patrimonioRoutes.use(autenticar);
 
-patrimonioRoutes.post("/", autenticar, patrimonioController.create);
-patrimonioRoutes.get("/", autenticar, patrimonioController.listar);
+patrimonioRoutes.post("/", patrimonioController.create);
+patrimonioRoutes.get("/", patrimonioController.listar);
 patrimonioRoutes.get("/numero/:numero", patrimonioController.findByNumero);
 patrimonioRoutes.put("/:id", patrimonioController.update);
 patrimonioRoutes.patch("/:id", patrimonioController.update);

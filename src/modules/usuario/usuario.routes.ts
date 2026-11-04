@@ -4,7 +4,7 @@ import { autenticar, autorizar } from "./usuario.middleware.js";
 
 const usuarioRoutes = Router();
 
-usuarioRoutes.post("/", autenticar, autorizar(["administrador", "gerente"]), usuarioController.create);
-usuarioRoutes.get("/:uid", usuarioController.findById);
+usuarioRoutes.post("/", autenticar, autorizar(["gerente", "administrador"]), usuarioController.create);
+usuarioRoutes.get("/:uid", autenticar, usuarioController.findById);
 
 export default usuarioRoutes;

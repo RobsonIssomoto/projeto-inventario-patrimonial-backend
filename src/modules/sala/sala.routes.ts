@@ -1,12 +1,15 @@
 import { Router } from "express";
 import salaController from "./sala.controller.js";
+import { autenticar, autorizar } from "../usuario/usuario.middleware.js";
 
 const salaRoutes = Router();
 
-salaRoutes.post("/", salaController.create);
+salaRoutes.use(autenticar);
+
+salaRoutes.post("/", autorizar(["gerente", "administrador"]), salaController.create);
 salaRoutes.get("/", salaController.findAll);
 salaRoutes.get("/:id", salaController.findById);
-salaRoutes.put("/:id", salaController.update);
-salaRoutes.patch("/:id/desativar", salaController.deactivate);
+salaRoutes.put("/:id", autorizar(["gerente", "administrador"]), salaController.update);
+salaRoutes.patch("/:id/desativar", autorizar(["gerente", "administrador"]), salaController.deactivate);
 
 export default salaRoutes;
