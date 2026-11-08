@@ -2,6 +2,7 @@ import { Types } from "mongoose";
 export type PerfilUsuario = "operador" | "gerente" | "administrador";
 
 export interface IUsuario {
+  _id: Types.ObjectId;
   uid: string;
   nome: string;
   email: string;

@@ -1,5 +1,6 @@
 import { Types } from "mongoose";
 import type { EstadoConservacao, StatusPatrimonio } from "../patrimonio/patrimonio.types.js";
+import type { IUsuario } from "../usuario/usuario.types.js";
 
 export type TipoMovimentacao = "conferencia" | "atualizacao_localizacao" | "transferencia";
 
@@ -7,17 +8,17 @@ export interface IMovimentacao {
   usuario: Types.ObjectId;
   patrimonio: Types.ObjectId;
   tipo: TipoMovimentacao;
-  secretaria: string;
-  sala: string;
+  secretaria: Types.ObjectId;
+  sala: Types.ObjectId;
   dataHora: Date;
   dados: {
     status?: StatusPatrimonio;
     estadoConservacao?: EstadoConservacao;
     observacoes?: string;
-    secretariaOrigem?: string;
-    secretariaDestino?: string;
-    salaOrigem?: string;
-    salaDestino?: string;
+    secretariaOrigem?: Types.ObjectId;
+    secretariaDestino?: Types.ObjectId;
+    salaOrigem?: Types.ObjectId;
+    salaDestino?: Types.ObjectId;
     motivo?: string;
   };
   createdAt?: Date;
@@ -25,19 +26,13 @@ export interface IMovimentacao {
 }
 
 export interface ICreateMovimentacaoDTO {
-  usuario: Types.ObjectId;
-  patrimonio: Types.ObjectId;
+  usuario: IUsuario;
+  patrimonioId: string;
   tipo: TipoMovimentacao;
-  secretaria: string;
-  sala: string;
-  dataHora: Date;
   dados: {
     status?: StatusPatrimonio;
     estadoConservacao?: EstadoConservacao;
     observacoes?: string;
-    secretariaOrigem?: string;
-    secretariaDestino?: string;
-    salaOrigem?: string;
     salaDestino?: string;
     motivo?: string;
   };

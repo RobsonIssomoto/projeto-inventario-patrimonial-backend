@@ -6,11 +6,13 @@ import type { ICreateMovimentacaoDTO, TipoMovimentacao } from "./movimentacao.ty
 class MovimentacaoController {
   public async create(request: Request, response: Response): Promise<Response> {
     try {
-      const { usuarioId, patrimonioId, tipo, secretaria, sala, dataHora, dados } = request.body;
+      const { patrimonioId, tipo, dados } = request.body;
 
-      if (!usuarioId || typeof usuarioId !== "string") {
-        return response.status(400).json({
-          message: "O ID do usuário é obrigatório.",
+      const usuarioLogado = request.usuario;
+
+      if (!usuarioLogado) {
+        return response.status(401).json({
+          message: "Usuário não autenticado.",
         });
       }
 
@@ -20,53 +22,21 @@ class MovimentacaoController {
         });
       }
 
+      if (!Types.ObjectId.isValid(patrimonioId)) {
+        return response.status(400).json({
+          message: "ID do patrimônio inválido.",
+        });
+      }
+
       if (tipo !== "conferencia" && tipo !== "atualizacao_localizacao" && tipo !== "transferencia") {
         return response.status(400).json({
           message: "Tipo de movimentação inválido.",
         });
       }
 
-      if (!secretaria || typeof secretaria !== "string") {
-        return response.status(400).json({
-          message: "A secretaria é obrigatória.",
-        });
-      }
-
-      if (!sala || typeof sala !== "string") {
-        return response.status(400).json({
-          message: "A sala é obrigatória.",
-        });
-      }
-
-      if (!dataHora) {
-        return response.status(400).json({
-          message: "A data e hora são obrigatórias.",
-        });
-      }
-
-      const data = new Date(dataHora);
-
-      if (Number.isNaN(data.getTime())) {
-        return response.status(400).json({
-          message: "Data inválida.",
-        });
-      }
-
       if (!dados || typeof dados !== "object" || Array.isArray(dados)) {
         return response.status(400).json({
           message: "Os dados devem ser um objeto válido.",
-        });
-      }
-
-      if (!Types.ObjectId.isValid(usuarioId)) {
-        return response.status(400).json({
-          message: "ID do usuário inválido.",
-        });
-      }
-
-      if (!Types.ObjectId.isValid(patrimonioId)) {
-        return response.status(400).json({
-          message: "ID do patrimônio inválido.",
         });
       }
 
@@ -97,36 +67,15 @@ class MovimentacaoController {
       }
 
       if (tipo === "atualizacao_localizacao" || tipo === "transferencia") {
-        if (!dados.secretariaOrigem || typeof dados.secretariaOrigem !== "string") {
-          return response.status(400).json({
-            message: "A secretaria de origem é obrigatória.",
-          });
-        }
-
-        if (!dados.salaOrigem || typeof dados.salaOrigem !== "string") {
-          return response.status(400).json({
-            message: "A sala de origem é obrigatória.",
-          });
-        }
-
-        if (!dados.secretariaDestino || typeof dados.secretariaDestino !== "string") {
-          return response.status(400).json({
-            message: "A secretaria de destino é obrigatória.",
-          });
-        }
-
         if (!dados.salaDestino || typeof dados.salaDestino !== "string") {
           return response.status(400).json({
             message: "A sala de destino é obrigatória.",
           });
         }
 
-        if (
-          dados.secretariaOrigem.trim() === dados.secretariaDestino.trim() &&
-          dados.salaOrigem.trim() === dados.salaDestino.trim()
-        ) {
+        if (!Types.ObjectId.isValid(dados.salaDestino)) {
           return response.status(400).json({
-            message: "A origem e o destino não podem ser iguais.",
+            message: "ID da sala de destino inválido.",
           });
         }
 
@@ -139,24 +88,15 @@ class MovimentacaoController {
         }
       }
 
-      const usuario = new Types.ObjectId(usuarioId);
-      const patrimonio = new Types.ObjectId(patrimonioId);
-
       const dadosValidados: ICreateMovimentacaoDTO = {
-        usuario,
-        patrimonio,
+        usuario: usuarioLogado,
+        patrimonioId,
         tipo: tipo as TipoMovimentacao,
-        secretaria: secretaria.trim(),
-        sala: sala.trim(),
-        dataHora: data,
         dados: {
           status: dados.status,
           estadoConservacao: dados.estadoConservacao,
           observacoes: typeof dados.observacoes === "string" ? dados.observacoes.trim() : undefined,
-          secretariaOrigem: typeof dados.secretariaOrigem === "string" ? dados.secretariaOrigem.trim() : undefined,
-          secretariaDestino: typeof dados.secretariaDestino === "string" ? dados.secretariaDestino.trim() : undefined,
-          salaOrigem: typeof dados.salaOrigem === "string" ? dados.salaOrigem.trim() : undefined,
-          salaDestino: typeof dados.salaDestino === "string" ? dados.salaDestino.trim() : undefined,
+          salaDestino: typeof dados.salaDestino === "string" ? dados.salaDestino : undefined,
           motivo: typeof dados.motivo === "string" ? dados.motivo.trim() : undefined,
         },
       };
@@ -168,6 +108,34 @@ class MovimentacaoController {
         dados: novaMovimentacao,
       });
     } catch (error: unknown) {
+      if (error instanceof Error) {
+        if (error.message === "Patrimônio não encontrado.") {
+          return response.status(404).json({
+            message: error.message,
+          });
+        }
+
+        if (error.message === "O usuário não pertence à secretaria do patrimônio.") {
+          return response.status(403).json({
+            message: error.message,
+          });
+        }
+
+        const mensagensEsperadas = [
+          "Sala de destino não encontrada.",
+          "A sala de destino está inativa.",
+          "O patrimônio já está na sala informada.",
+          "Para mudar de secretaria, utilize o tipo transferencia.",
+          "Para mudar de sala na mesma secretaria, utilize o tipo atualizacao_localizacao.",
+        ];
+
+        if (mensagensEsperadas.includes(error.message)) {
+          return response.status(400).json({
+            message: error.message,
+          });
+        }
+      }
+
       console.error("Erro ao criar movimentação.", error);
 
       return response.status(500).json({
@@ -180,20 +148,42 @@ class MovimentacaoController {
     try {
       const { patrimonio, usuario, tipo, secretaria, sala, ordenarPor } = request.query;
 
+      const usuarioLogado = request.usuario;
+
+      if (!usuarioLogado) {
+        return response.status(401).json({
+          message: "Usuário não autenticado.",
+        });
+      }
+
+      for (const id of [patrimonio, usuario, secretaria, sala]) {
+        if (id && !Types.ObjectId.isValid(String(id))) {
+          return response.status(400).json({
+            message: "ID inválido nos filtros.",
+          });
+        }
+      }
+
       const filtros: Record<string, any> = {};
+
+      if (usuarioLogado.perfil === "administrador") {
+        if (secretaria) filtros.secretaria = String(secretaria);
+      } else {
+        filtros.$or = [
+          { secretaria: usuarioLogado.secretaria },
+          { "dados.secretariaDestino": usuarioLogado.secretaria },
+        ];
+      }
 
       if (patrimonio) filtros.patrimonio = String(patrimonio);
       if (usuario) filtros.usuario = String(usuario);
       if (tipo) filtros.tipo = String(tipo);
-      if (secretaria) filtros.secretaria = String(secretaria);
       if (sala) filtros.sala = String(sala);
 
       let ordenacao: Record<string, 1 | -1> = { dataHora: -1 };
 
       if (ordenarPor === "antigos") {
         ordenacao = { dataHora: 1 };
-      } else if (ordenarPor === "numero") {
-        ordenacao = { numeroPatrimonio: 1 };
       }
 
       const movimentacoes = await movimentacaoService.findAll(filtros, ordenacao);
@@ -203,19 +193,6 @@ class MovimentacaoController {
       return response.status(500).json({ message: "Erro interno no servidor." });
     }
   }
-  //   public async findByPatrimonio(request: Request, response: Response): Promise<Response> {
-  //     try{
-
-  //     }catch(){
-
-  //     }
-  //   }
-  //   public async findByUsuario(request: Request, response: Response): Promise<Response> {    try{
-
-  //     }catch(){
-
-  //     }
-  // }
 }
 
 export default new MovimentacaoController();

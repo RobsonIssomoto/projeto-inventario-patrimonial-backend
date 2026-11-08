@@ -20,14 +20,15 @@ const movimentacaoSchema = new Schema<IMovimentacao>(
       required: true,
     },
     secretaria: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: "Secretaria",
       required: true,
-      trim: true,
+      index: true,
     },
     sala: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: "Sala",
       required: true,
-      trim: true,
     },
     dataHora: {
       type: Date,
@@ -48,19 +49,24 @@ const movimentacaoSchema = new Schema<IMovimentacao>(
         trim: true,
       },
       secretariaOrigem: {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: "Secretaria",
       },
       secretariaDestino: {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: "Secretaria",
       },
       salaOrigem: {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: "Sala",
       },
       salaDestino: {
-        type: String,
+        type: Schema.Types.ObjectId,
+        ref: "Sala",
       },
       motivo: {
         type: String,
+        trim: true,
       },
     },
   },
