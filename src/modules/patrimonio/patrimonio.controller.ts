@@ -190,7 +190,7 @@ class PatrimonioController {
         });
       }
 
-      if (usuarioLogado.perfil !== "administrador" && !usuarioLogado.secretaria.equals(patrimonio.secretaria)) {
+      if (usuarioLogado.perfil !== "administrador" && !usuarioLogado.secretaria.equals(patrimonio.secretaria._id)) {
         return response.status(404).json({
           erro: "Patrimônio não localizado no sistema.",
         });

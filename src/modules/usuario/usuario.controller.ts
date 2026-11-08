@@ -104,9 +104,23 @@ class UsuarioController {
         });
       }
 
+      const usuarioLogado = request.usuario;
+
+      if (!usuarioLogado) {
+        return response.status(401).json({
+          erro: "Usuário não autenticado.",
+        });
+      }
+
       const usuario = await usuarioService.findById(uid);
 
       if (!usuario) {
+        return response.status(404).json({
+          erro: "Usuário não encontrado.",
+        });
+      }
+
+      if (usuarioLogado.perfil !== "administrador" && !usuarioLogado.secretaria.equals(usuario.secretaria)) {
         return response.status(404).json({
           erro: "Usuário não encontrado.",
         });
