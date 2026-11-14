@@ -10,6 +10,7 @@ export interface IMovimentacao {
   tipo: TipoMovimentacao;
   secretaria: Types.ObjectId;
   sala: Types.ObjectId;
+  status: "pendente" | "recebida" | "cancelada";
   dataHora: Date;
   dados: {
     status?: StatusPatrimonio;
@@ -20,6 +21,9 @@ export interface IMovimentacao {
     salaOrigem?: Types.ObjectId;
     salaDestino?: Types.ObjectId;
     motivo?: string;
+    justificativa?: string;
+    usuarioDestino?: Types.ObjectId;
+    dataRecebimento?: Date;
   };
   createdAt?: Date;
   updatedAt?: Date;
@@ -33,7 +37,9 @@ export interface ICreateMovimentacaoDTO {
     status?: StatusPatrimonio;
     estadoConservacao?: EstadoConservacao;
     observacoes?: string;
+    secretariaDestino?: string;
     salaDestino?: string;
     motivo?: string;
+    justificativa?: string;
   };
 }

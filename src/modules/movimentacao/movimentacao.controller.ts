@@ -66,7 +66,7 @@ class MovimentacaoController {
         }
       }
 
-      if (tipo === "atualizacao_localizacao" || tipo === "transferencia") {
+      if (tipo === "atualizacao_localizacao") {
         if (!dados.salaDestino || typeof dados.salaDestino !== "string") {
           return response.status(400).json({
             message: "A sala de destino é obrigatória.",
@@ -78,13 +78,31 @@ class MovimentacaoController {
             message: "ID da sala de destino inválido.",
           });
         }
+      }
 
-        if (tipo === "transferencia") {
-          if (!dados.motivo || typeof dados.motivo !== "string" || dados.motivo.trim().length === 0) {
-            return response.status(400).json({
-              message: "O motivo é obrigatório para transferência.",
-            });
-          }
+      if (tipo === "transferencia") {
+        if (!dados.secretariaDestino || typeof dados.secretariaDestino !== "string") {
+          return response.status(400).json({
+            message: "A secretaria de destino é obrigatória.",
+          });
+        }
+
+        if (!Types.ObjectId.isValid(dados.secretariaDestino)) {
+          return response.status(400).json({
+            message: "ID da secretaria de destino inválido.",
+          });
+        }
+
+        if (!dados.motivo || typeof dados.motivo !== "string" || dados.motivo.trim().length === 0) {
+          return response.status(400).json({
+            message: "O motivo é obrigatório para transferência.",
+          });
+        }
+
+        if (!dados.justificativa || typeof dados.justificativa !== "string" || dados.justificativa.trim().length < 10) {
+          return response.status(400).json({
+            message: "A justificativa é obrigatória e deve ter no mínimo 10 caracteres.",
+          });
         }
       }
 
@@ -96,8 +114,10 @@ class MovimentacaoController {
           status: dados.status,
           estadoConservacao: dados.estadoConservacao,
           observacoes: typeof dados.observacoes === "string" ? dados.observacoes.trim() : undefined,
+          secretariaDestino: typeof dados.secretariaDestino === "string" ? dados.secretariaDestino : undefined,
           salaDestino: typeof dados.salaDestino === "string" ? dados.salaDestino : undefined,
           motivo: typeof dados.motivo === "string" ? dados.motivo.trim() : undefined,
+          justificativa: typeof dados.justificativa === "string" ? dados.justificativa.trim() : undefined,
         },
       };
 

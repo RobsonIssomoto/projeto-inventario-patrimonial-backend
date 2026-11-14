@@ -30,6 +30,11 @@ const movimentacaoSchema = new Schema<IMovimentacao>(
       ref: "Sala",
       required: true,
     },
+    status: {
+      type: String,
+      enum: ["pendente", "recebida", "cancelada"],
+      required: true,
+    },
     dataHora: {
       type: Date,
       required: true,
@@ -67,6 +72,17 @@ const movimentacaoSchema = new Schema<IMovimentacao>(
       motivo: {
         type: String,
         trim: true,
+      },
+      justificativa: {
+        type: String,
+        trim: true,
+      },
+      usuarioDestino: {
+        type: Schema.Types.ObjectId,
+        ref: "Usuario",
+      },
+      dataRecebimento: {
+        type: Date,
       },
     },
   },

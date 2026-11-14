@@ -3,6 +3,7 @@ import type { Types } from "mongoose";
 import Movimentacao from "./movimentacao.model.js";
 import Patrimonio from "../patrimonio/patrimonio.model.js";
 import Sala from "../sala/sala.model.js";
+import Secretaria from "../secretaria/secretaria.model.js";
 import type { ICreateMovimentacaoDTO, IMovimentacao } from "./movimentacao.types.js";
 
 class MovimentacaoService {
@@ -31,7 +32,7 @@ class MovimentacaoService {
 
       if (data.dados.status) patrimonio.status = data.dados.status;
       if (data.dados.estadoConservacao) patrimonio.estadoConservacao = data.dados.estadoConservacao;
-    } else {
+    } else if (data.tipo === "atualizacao_localizacao") {
       const salaDestino = await Sala.findById(data.dados.salaDestino);
 
       if (!salaDestino) {
@@ -48,12 +49,8 @@ class MovimentacaoService {
 
       const mesmaSecretaria = salaDestino.secretaria.equals(secretariaAtual);
 
-      if (data.tipo === "atualizacao_localizacao" && !mesmaSecretaria) {
+      if (!mesmaSecretaria) {
         throw new Error("Para mudar de secretaria, utilize o tipo transferencia.");
-      }
-
-      if (data.tipo === "transferencia" && mesmaSecretaria) {
-        throw new Error("Para mudar de sala na mesma secretaria, utilize o tipo atualizacao_localizacao.");
       }
 
       dados = {
@@ -66,6 +63,28 @@ class MovimentacaoService {
 
       patrimonio.sala = salaDestino._id;
       patrimonio.secretaria = salaDestino.secretaria;
+    } else {
+      const secretariaDestino = await Secretaria.findById(data.dados.secretariaDestino);
+
+      if (!secretariaDestino) {
+        throw new Error("Secretaria de destino não encontrada.");
+      }
+
+      if (!secretariaDestino.ativa) {
+        throw new Error("A secretaria de destino está inativa.");
+      }
+
+      if (secretariaDestino._id.equals(secretariaAtual)) {
+        throw new Error("A secretaria de destino deve ser diferente da secretaria atual.");
+      }
+
+      dados = {
+        secretariaOrigem: secretariaAtual,
+        salaOrigem: salaAtual,
+        secretariaDestino: secretariaDestino._id,
+        motivo: data.dados.motivo,
+        justificativa: data.dados.justificativa,
+      };
     }
 
     const movimentacao = new Movimentacao({
@@ -74,6 +93,7 @@ class MovimentacaoService {
       tipo: data.tipo,
       secretaria: secretariaAtual,
       sala: salaAtual,
+      status: data.tipo === "transferencia" ? "pendente" : "concluida",
       dataHora: new Date(),
       dados,
     });
@@ -84,7 +104,10 @@ class MovimentacaoService {
       session.startTransaction();
 
       await movimentacao.save({ session });
-      await patrimonio.save({ session });
+
+      if (data.tipo !== "transferencia") {
+        await patrimonio.save({ session });
+      }
 
       await session.commitTransaction();
 
@@ -103,6 +126,10 @@ class MovimentacaoService {
       .populate("patrimonio", "numeroPatrimonio descricao")
       .populate("secretaria", "nome")
       .populate("sala", "nome")
+      .populate("dados.salaOrigem", "nome")
+      .populate("dados.salaDestino", "nome")
+      .populate("dados.secretariaOrigem", "nome")
+      .populate("dados.secretariaDestino", "nome")
       .sort(ordenacao);
   }
 
