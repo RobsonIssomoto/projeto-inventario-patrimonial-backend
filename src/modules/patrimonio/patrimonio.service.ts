@@ -2,6 +2,7 @@ import { Types } from "mongoose";
 import Sala from "../sala/sala.model.js";
 import Secretaria from "../secretaria/secretaria.model.js";
 import Patrimonio from "../patrimonio/patrimonio.model.js";
+import Movimentacao from "../movimentacao/movimentacao.model.js";
 import type { ICreatePatrimonioDTO, IUpdatePatrimonioDTO } from "./patrimonio.types.js";
 
 class PatrimonioService {
@@ -58,7 +59,7 @@ class PatrimonioService {
       .populate("secretaria", "nome");
   }
 
-  public async update(id: string, data: IUpdatePatrimonioDTO) {
+  public async update(id: string, data: IUpdatePatrimonioDTO, usuarioId: string) {
     const patrimonio = await Patrimonio.findById(id);
 
     if (!patrimonio) {
@@ -117,10 +118,28 @@ class PatrimonioService {
       throw new Error("Nenhum campo válido foi informado para atualização.");
     }
 
-    return await Patrimonio.findByIdAndUpdate(id, dadosPermitidos, {
+    // Se a sala foi alterada, cria uma movimentação
+    const patrimonioAtualizado = await Patrimonio.findByIdAndUpdate(id, dadosPermitidos, {
       new: true,
       runValidators: true,
     });
+
+    if (data.sala !== undefined && patrimonioAtualizado) {
+      await Movimentacao.create({
+        usuario: usuarioId,
+        patrimonio: patrimonio._id,
+        tipo: "atualizacao_localizacao",
+        secretaria: patrimonio.secretaria,
+        sala: data.sala,
+        dataHora: new Date(),
+        dados: {
+          salaOrigem: patrimonio.sala,
+          salaDestino: data.sala,
+          motivo: "Troca de sala",
+        },
+      });
+    }
+    return patrimonioAtualizado;
   }
 
   public async deactivate(id: string) {

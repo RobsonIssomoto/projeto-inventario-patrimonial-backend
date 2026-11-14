@@ -274,14 +274,18 @@ class PatrimonioController {
         });
       }
 
-      const patrimonioAtualizado = await patrimonioService.update(id, {
-        descricao,
-        categoria,
-        status,
-        estadoConservacao,
-        observacoes,
-        sala,
-      });
+      const patrimonioAtualizado = await patrimonioService.update(
+        id,
+        {
+          descricao,
+          categoria,
+          status,
+          estadoConservacao,
+          observacoes,
+          sala,
+        },
+        usuarioLogado._id.toString(),
+      );
 
       if (!patrimonioAtualizado) {
         return response.status(404).json({
