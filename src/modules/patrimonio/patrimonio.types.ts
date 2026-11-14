@@ -34,4 +34,5 @@ export interface IUpdatePatrimonioDTO {
   status?: StatusPatrimonio;
   estadoConservacao?: EstadoConservacao;
   observacoes?: string;
+  sala?: string;
 }

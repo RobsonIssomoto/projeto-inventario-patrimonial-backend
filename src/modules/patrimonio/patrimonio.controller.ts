@@ -218,7 +218,7 @@ class PatrimonioController {
         return response.status(400).json({ erro: "ID inválido." });
       }
 
-      const { descricao, categoria, status, estadoConservacao, observacoes } = request.body;
+      const { descricao, categoria, status, estadoConservacao, observacoes, sala } = request.body;
 
       const usuarioLogado = request.usuario;
 
@@ -251,7 +251,8 @@ class PatrimonioController {
         categoria === undefined &&
         status === undefined &&
         estadoConservacao === undefined &&
-        observacoes === undefined
+        observacoes === undefined &&
+        sala === undefined
       ) {
         return response.status(400).json({
           erro: "Informe pelo menos um campo para atualização.",
@@ -279,6 +280,7 @@ class PatrimonioController {
         status,
         estadoConservacao,
         observacoes,
+        sala,
       });
 
       if (!patrimonioAtualizado) {

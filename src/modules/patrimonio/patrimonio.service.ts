@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import Sala from "../sala/sala.model.js";
 import Secretaria from "../secretaria/secretaria.model.js";
 import Patrimonio from "../patrimonio/patrimonio.model.js";
@@ -58,8 +59,14 @@ class PatrimonioService {
   }
 
   public async update(id: string, data: IUpdatePatrimonioDTO) {
+    const patrimonio = await Patrimonio.findById(id);
+
+    if (!patrimonio) {
+      throw new Error("Patrimônio não encontrado para atualização.");
+    }
+
     const dadosPermitidos: IUpdatePatrimonioDTO = {};
-    //campos secretaria, sala ou numeroPatrimonio no corpo serão ignorados
+
     if (data.descricao !== undefined) {
       dadosPermitidos.descricao = data.descricao.trim();
     }
@@ -78,6 +85,32 @@ class PatrimonioService {
 
     if (data.observacoes !== undefined) {
       dadosPermitidos.observacoes = data.observacoes?.trim();
+    }
+
+    if (data.sala !== undefined) {
+      if (!Types.ObjectId.isValid(data.sala)) {
+        throw new Error("ID da sala inválido.");
+      }
+
+      const salaDestino = await Sala.findById(data.sala);
+
+      if (!salaDestino) {
+        throw new Error("Sala não encontrada.");
+      }
+
+      if (!salaDestino.ativa) {
+        throw new Error("Não é possível mover o patrimônio para uma sala inativa.");
+      }
+
+      if (salaDestino.secretaria.toString() !== patrimonio.secretaria.toString()) {
+        throw new Error("A sala informada não pertence à secretaria do patrimônio.");
+      }
+
+      if (salaDestino._id.toString() === patrimonio.sala.toString()) {
+        throw new Error("A sala informada já é a sala atual do patrimônio.");
+      }
+
+      dadosPermitidos.sala = data.sala;
     }
 
     if (Object.keys(dadosPermitidos).length === 0) {
