@@ -95,6 +95,16 @@ class PatrimonioService {
 
       const salaDestino = await Sala.findById(data.sala);
 
+      const transferenciaPendente = await Movimentacao.findOne({
+        patrimonio: patrimonio._id,
+        tipo: "transferencia",
+        status: "pendente",
+      });
+
+      if (transferenciaPendente) {
+        throw new Error("Não é possível alterar a sala enquanto houver transferência pendente.");
+      }
+
       if (!salaDestino) {
         throw new Error("Sala não encontrada.");
       }

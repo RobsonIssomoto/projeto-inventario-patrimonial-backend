@@ -10,7 +10,7 @@ export interface IMovimentacao {
   tipo: TipoMovimentacao;
   secretaria: Types.ObjectId;
   sala: Types.ObjectId;
-  status: "pendente" | "recebida" | "cancelada";
+  status: "pendente" | "recebida" | "cancelada" | "concluida";
   dataHora: Date;
   dados: {
     status?: StatusPatrimonio;

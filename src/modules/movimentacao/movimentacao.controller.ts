@@ -147,6 +147,8 @@ class MovimentacaoController {
           "O patrimônio já está na sala informada.",
           "Para mudar de secretaria, utilize o tipo transferencia.",
           "Para mudar de sala na mesma secretaria, utilize o tipo atualizacao_localizacao.",
+          "Não é possível alterar a localização ou criar outra transferência enquanto houver transferência pendente.",
+          "Já existe uma transferência pendente para este patrimônio.",
         ];
 
         if (mensagensEsperadas.includes(error.message)) {
@@ -211,6 +213,57 @@ class MovimentacaoController {
     } catch (error) {
       console.error("Erro ao listar movimentações.", error);
       return response.status(500).json({ message: "Erro interno no servidor." });
+    }
+  }
+
+  public async cancel(request: Request, response: Response): Promise<Response> {
+    try {
+      const parametroId = request.params.id;
+      const id = Array.isArray(parametroId) ? parametroId[0] : parametroId;
+
+      const usuarioLogado = request.usuario;
+
+      if (!usuarioLogado) {
+        return response.status(401).json({
+          message: "Usuário não autenticado.",
+        });
+      }
+
+      if (!id || !Types.ObjectId.isValid(id)) {
+        return response.status(400).json({
+          message: "ID da movimentação inválido.",
+        });
+      }
+
+      const movimentacaoCancelada = await movimentacaoService.cancel(id, usuarioLogado);
+
+      return response.status(200).json({
+        message: "Transferência cancelada com sucesso.",
+        dados: movimentacaoCancelada,
+      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        if (
+          error.message === "Movimentação não encontrada." ||
+          error.message === "Apenas transferências pendentes podem ser canceladas."
+        ) {
+          return response.status(404).json({
+            message: error.message,
+          });
+        }
+
+        if (error.message === "Você não possui permissão para cancelar esta transferência.") {
+          return response.status(403).json({
+            message: error.message,
+          });
+        }
+      }
+
+      console.error("Erro ao cancelar transferência.", error);
+
+      return response.status(500).json({
+        message: "Erro interno no servidor.",
+      });
     }
   }
 }

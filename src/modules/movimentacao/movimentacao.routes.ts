@@ -8,5 +8,6 @@ movimentacaoRoutes.use(autenticar);
 
 movimentacaoRoutes.post("/", movimentacaoController.create);
 movimentacaoRoutes.get("/", movimentacaoController.findAll);
+movimentacaoRoutes.patch("/:id/cancelar", movimentacaoController.cancel);
 
 export default movimentacaoRoutes;

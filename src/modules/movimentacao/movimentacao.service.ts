@@ -23,6 +23,18 @@ class MovimentacaoService {
 
     let dados: IMovimentacao["dados"];
 
+    const transferenciaPendente = await Movimentacao.findOne({
+      patrimonio: patrimonio._id,
+      tipo: "transferencia",
+      status: "pendente",
+    });
+
+    if (transferenciaPendente && (data.tipo === "transferencia" || data.tipo === "atualizacao_localizacao")) {
+      throw new Error(
+        "Não é possível alterar a localização ou criar outra transferência enquanto houver transferência pendente.",
+      );
+    }
+
     if (data.tipo === "conferencia") {
       dados = {
         status: data.dados.status,
@@ -139,6 +151,33 @@ class MovimentacaoService {
 
   public async findByUsuario(usuarioId: Types.ObjectId) {
     return await Movimentacao.find({ usuario: usuarioId }).sort({ dataHora: -1 }).populate("patrimonio");
+  }
+
+  public async cancel(id: string, usuarioLogado: any) {
+    const movimentacao = await Movimentacao.findById(id);
+
+    if (!movimentacao) {
+      throw new Error("Movimentação não encontrada.");
+    }
+
+    if (movimentacao.tipo !== "transferencia") {
+      throw new Error("Apenas transferências pendentes podem ser canceladas.");
+    }
+
+    if (movimentacao.status !== "pendente") {
+      throw new Error("Apenas transferências pendentes podem ser canceladas.");
+    }
+
+    const podeCancelar =
+      usuarioLogado.perfil === "administrador" || usuarioLogado.secretaria.equals(movimentacao.secretaria);
+
+    if (!podeCancelar) {
+      throw new Error("Você não possui permissão para cancelar esta transferência.");
+    }
+
+    movimentacao.status = "cancelada";
+
+    return await movimentacao.save();
   }
 }
 

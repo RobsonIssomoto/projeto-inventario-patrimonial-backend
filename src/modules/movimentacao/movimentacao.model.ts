@@ -32,7 +32,7 @@ const movimentacaoSchema = new Schema<IMovimentacao>(
     },
     status: {
       type: String,
-      enum: ["pendente", "recebida", "cancelada"],
+      enum: ["pendente", "recebida", "cancelada", "concluida"],
       required: true,
     },
     dataHora: {
