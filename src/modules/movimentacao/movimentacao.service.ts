@@ -4,6 +4,7 @@ import Movimentacao from "./movimentacao.model.js";
 import Patrimonio from "../patrimonio/patrimonio.model.js";
 import Sala from "../sala/sala.model.js";
 import Secretaria from "../secretaria/secretaria.model.js";
+import type { IUsuario } from "../usuario/usuario.types.js";
 import type { ICreateMovimentacaoDTO, IMovimentacao } from "./movimentacao.types.js";
 
 class MovimentacaoService {
@@ -16,6 +17,10 @@ class MovimentacaoService {
 
     if (data.usuario.perfil !== "administrador" && !data.usuario.secretaria.equals(patrimonio.secretaria)) {
       throw new Error("O usuário não pertence à secretaria do patrimônio.");
+    }
+
+    if (data.tipo === "transferencia" && data.usuario.perfil !== "gerente" && data.usuario.perfil !== "administrador") {
+      throw new Error("Você não possui permissão para criar transferências entre secretarias.");
     }
 
     const secretariaAtual = patrimonio.secretaria;
@@ -142,6 +147,7 @@ class MovimentacaoService {
       .populate("dados.salaDestino", "nome")
       .populate("dados.secretariaOrigem", "nome")
       .populate("dados.secretariaDestino", "nome")
+      .populate("dados.usuarioDestino", "nome")
       .sort(ordenacao);
   }
 
@@ -169,15 +175,123 @@ class MovimentacaoService {
     }
 
     const podeCancelar =
-      usuarioLogado.perfil === "administrador" || usuarioLogado.secretaria.equals(movimentacao.secretaria);
+      usuarioLogado.perfil === "administrador" ||
+      (usuarioLogado.perfil === "gerente" && usuarioLogado.secretaria.equals(movimentacao.secretaria));
 
     if (!podeCancelar) {
       throw new Error("Você não possui permissão para cancelar esta transferência.");
     }
 
-    movimentacao.status = "cancelada";
+    const cancelada = await Movimentacao.findOneAndUpdate(
+      {
+        _id: movimentacao._id,
+        tipo: "transferencia",
+        status: "pendente",
+      },
+      {
+        $set: { status: "cancelada" },
+      },
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
 
-    return await movimentacao.save();
+    if (!cancelada) {
+      throw new Error("Apenas transferências pendentes podem ser canceladas.");
+    }
+
+    return cancelada;
+  }
+
+  public async findPendingReceipts(usuario: IUsuario) {
+    if (usuario.perfil !== "gerente" && usuario.perfil !== "administrador") {
+      throw new Error("Você não possui permissão para consultar recebimentos.");
+    }
+
+    return this.findAll(
+      {
+        tipo: "transferencia",
+        status: "pendente",
+        "dados.secretariaDestino": usuario.secretaria,
+      },
+      { dataHora: -1 },
+    );
+  }
+
+  public async receive(id: string, salaDestinoId: string, usuario: IUsuario) {
+    if (usuario.perfil !== "gerente" && usuario.perfil !== "administrador") {
+      throw new Error("Você não possui permissão para receber esta transferência.");
+    }
+
+    const session = await mongoose.startSession();
+
+    try {
+      const recebida = await session.withTransaction(async () => {
+        const movimentacao = await Movimentacao.findById(id).session(session);
+
+        if (!movimentacao) {
+          throw new Error("Movimentação não encontrada.");
+        }
+
+        if (movimentacao.tipo !== "transferencia" || movimentacao.status !== "pendente") {
+          throw new Error("Apenas transferências pendentes podem ser recebidas.");
+        }
+
+        const secretariaDestinoId = movimentacao.dados.secretariaDestino;
+
+        if (!secretariaDestinoId) {
+          throw new Error("A transferência não possui secretaria de destino.");
+        }
+
+        if (usuario.perfil !== "administrador" && !usuario.secretaria.equals(secretariaDestinoId)) {
+          throw new Error("Você não possui permissão para receber esta transferência.");
+        }
+
+        const secretariaDestino = await Secretaria.findById(secretariaDestinoId).session(session);
+
+        if (!secretariaDestino || !secretariaDestino.ativa) {
+          throw new Error("Secretaria de destino inexistente ou inativa.");
+        }
+
+        const salaDestino = await Sala.findById(salaDestinoId).session(session);
+
+        if (!salaDestino || !salaDestino.ativa) {
+          throw new Error("Sala de destino inexistente ou inativa.");
+        }
+
+        if (!salaDestino.secretaria.equals(secretariaDestinoId)) {
+          throw new Error("A sala escolhida não pertence à secretaria de destino.");
+        }
+
+        const patrimonio = await Patrimonio.findById(movimentacao.patrimonio).session(session);
+
+        if (!patrimonio || !patrimonio.ativo) {
+          throw new Error("Patrimônio não encontrado.");
+        }
+
+        if (!patrimonio.secretaria.equals(movimentacao.secretaria) || !patrimonio.sala.equals(movimentacao.sala)) {
+          throw new Error("A localização do patrimônio mudou desde a solicitação.");
+        }
+
+        patrimonio.secretaria = secretariaDestinoId;
+        patrimonio.sala = salaDestino._id;
+
+        movimentacao.status = "recebida";
+        movimentacao.dados.salaDestino = salaDestino._id;
+        movimentacao.dados.usuarioDestino = usuario._id;
+        movimentacao.dados.dataRecebimento = new Date();
+
+        await patrimonio.save({ session });
+        await movimentacao.save({ session });
+
+        return movimentacao;
+      });
+
+      return recebida;
+    } finally {
+      await session.endSession();
+    }
   }
 }
 

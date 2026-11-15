@@ -141,6 +141,12 @@ class MovimentacaoController {
           });
         }
 
+        if (error.message === "Você não possui permissão para criar transferências entre secretarias.") {
+          return response.status(403).json({
+            message: error.message,
+          });
+        }
+
         const mensagensEsperadas = [
           "Sala de destino não encontrada.",
           "A sala de destino está inativa.",
@@ -260,6 +266,113 @@ class MovimentacaoController {
       }
 
       console.error("Erro ao cancelar transferência.", error);
+
+      return response.status(500).json({
+        message: "Erro interno no servidor.",
+      });
+    }
+  }
+
+  public async findPendingReceipts(request: Request, response: Response): Promise<Response> {
+    try {
+      const usuario = request.usuario;
+
+      if (!usuario) {
+        return response.status(401).json({
+          message: "Usuário não autenticado.",
+        });
+      }
+
+      const movimentacoes = await movimentacaoService.findPendingReceipts(usuario);
+
+      return response.status(200).json(movimentacoes);
+    } catch (error: unknown) {
+      if (error instanceof Error && error.message === "Você não possui permissão para consultar recebimentos.") {
+        return response.status(403).json({
+          message: error.message,
+        });
+      }
+
+      console.error("Erro ao listar recebimentos.", error);
+
+      return response.status(500).json({
+        message: "Erro interno no servidor.",
+      });
+    }
+  }
+
+  public async receive(request: Request, response: Response): Promise<Response> {
+    try {
+      const usuario = request.usuario;
+
+      if (!usuario) {
+        return response.status(401).json({
+          message: "Usuário não autenticado.",
+        });
+      }
+
+      const parametroId = request.params.id;
+      const id = Array.isArray(parametroId) ? parametroId[0] : parametroId;
+      const salaDestinoId: unknown = request.body?.salaDestinoId;
+
+      if (!id || !Types.ObjectId.isValid(id)) {
+        return response.status(400).json({
+          message: "ID da movimentação inválido.",
+        });
+      }
+
+      if (typeof salaDestinoId !== "string" || !Types.ObjectId.isValid(salaDestinoId)) {
+        return response.status(400).json({
+          message: "Informe um ID de sala de destino válido.",
+        });
+      }
+
+      const movimentacao = await movimentacaoService.receive(id, salaDestinoId, usuario);
+
+      return response.status(200).json({
+        message: "Transferência recebida com sucesso.",
+        dados: movimentacao,
+      });
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        if (error.message === "Você não possui permissão para receber esta transferência.") {
+          return response.status(403).json({
+            message: error.message,
+          });
+        }
+
+        if (error.message === "Movimentação não encontrada." || error.message === "Patrimônio não encontrado.") {
+          return response.status(404).json({
+            message: error.message,
+          });
+        }
+
+        const conflitos = [
+          "Apenas transferências pendentes podem ser recebidas.",
+          "A localização do patrimônio mudou desde a solicitação.",
+        ];
+
+        if (conflitos.includes(error.message)) {
+          return response.status(409).json({
+            message: error.message,
+          });
+        }
+
+        const dadosInvalidos = [
+          "A transferência não possui secretaria de destino.",
+          "Secretaria de destino inexistente ou inativa.",
+          "Sala de destino inexistente ou inativa.",
+          "A sala escolhida não pertence à secretaria de destino.",
+        ];
+
+        if (dadosInvalidos.includes(error.message)) {
+          return response.status(400).json({
+            message: error.message,
+          });
+        }
+      }
+
+      console.error("Erro ao receber transferência.", error);
 
       return response.status(500).json({
         message: "Erro interno no servidor.",

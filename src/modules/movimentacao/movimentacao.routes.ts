@@ -9,5 +9,7 @@ movimentacaoRoutes.use(autenticar);
 movimentacaoRoutes.post("/", movimentacaoController.create);
 movimentacaoRoutes.get("/", movimentacaoController.findAll);
 movimentacaoRoutes.patch("/:id/cancelar", movimentacaoController.cancel);
+movimentacaoRoutes.get("/recebimentos", movimentacaoController.findPendingReceipts);
+movimentacaoRoutes.patch("/:id/receber", movimentacaoController.receive);
 
 export default movimentacaoRoutes;
