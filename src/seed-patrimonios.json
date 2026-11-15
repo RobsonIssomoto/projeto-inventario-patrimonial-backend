@@ -2,8 +2,8 @@
   {
     "numeroPatrimonio": "PAT-001",
     "descricao": "Notebook Dell Latitude 5420",
-    "secretaria": "TI",
-    "sala": "101",
+    "secretariaNome": "Tecnologia da Informação",
+    "salaNome": "Sala 101",
     "categoria": "Notebook",
     "status": "conferido",
     "estadoConservacao": "bom",
@@ -12,28 +12,26 @@
   {
     "numeroPatrimonio": "PAT-002",
     "descricao": "Monitor LG 24 polegadas",
-    "secretaria": "TI",
-    "sala": "101",
+    "secretariaNome": "Tecnologia da Informação",
+    "salaNome": "Sala 101",
     "categoria": "Monitor",
     "status": "conferido",
-    "estadoConservacao": "novo",
-    "observacoes": ""
+    "estadoConservacao": "novo"
   },
   {
     "numeroPatrimonio": "PAT-003",
     "descricao": "Cadeira de escritório ergonômica",
-    "secretaria": "RH",
-    "sala": "205",
+    "secretariaNome": "Recursos Humanos",
+    "salaNome": "Sala 205",
     "categoria": "Móvel",
     "status": "pendente",
-    "estadoConservacao": "bom",
-    "observacoes": ""
+    "estadoConservacao": "bom"
   },
   {
     "numeroPatrimonio": "PAT-004",
     "descricao": "Mesa de escritório em L",
-    "secretaria": "RH",
-    "sala": "205",
+    "secretariaNome": "Recursos Humanos",
+    "salaNome": "Sala 205",
     "categoria": "Móvel",
     "status": "conferido",
     "estadoConservacao": "regular",
@@ -42,18 +40,17 @@
   {
     "numeroPatrimonio": "PAT-005",
     "descricao": "Impressora HP LaserJet Pro",
-    "secretaria": "Administrativo",
-    "sala": "302",
+    "secretariaNome": "Administração",
+    "salaNome": "Sala 302",
     "categoria": "Impressora",
     "status": "pendente",
-    "estadoConservacao": "bom",
-    "observacoes": ""
+    "estadoConservacao": "bom"
   },
   {
     "numeroPatrimonio": "PAT-006",
     "descricao": "Projetor Epson PowerLite",
-    "secretaria": "TI",
-    "sala": "101",
+    "secretariaNome": "Tecnologia da Informação",
+    "salaNome": "Sala 101",
     "categoria": "Projetor",
     "status": "nao_localizado",
     "estadoConservacao": "regular",
@@ -62,41 +59,49 @@
   {
     "numeroPatrimonio": "PAT-007",
     "descricao": "Teclado mecânico Logitech",
-    "secretaria": "TI",
-    "sala": "102",
+    "secretariaNome": "Tecnologia da Informação",
+    "salaNome": "Sala 102",
     "categoria": "Periférico",
     "status": "conferido",
-    "estadoConservacao": "novo",
-    "observacoes": ""
+    "estadoConservacao": "novo"
   },
   {
     "numeroPatrimonio": "PAT-008",
     "descricao": "Mouse sem fio Microsoft",
-    "secretaria": "TI",
-    "sala": "102",
+    "secretariaNome": "Tecnologia da Informação",
+    "salaNome": "Sala 102",
     "categoria": "Periférico",
     "status": "conferido",
-    "estadoConservacao": "bom",
-    "observacoes": ""
+    "estadoConservacao": "bom"
   },
   {
     "numeroPatrimonio": "PAT-009",
     "descricao": "Servidor Dell PowerEdge",
-    "secretaria": "TI",
-    "sala": "110",
+    "secretariaNome": "Tecnologia da Informação",
+    "salaNome": "Sala 110",
     "categoria": "Servidor",
     "status": "pendente",
     "estadoConservacao": "bom",
-    "observacoes": "Equipamento de crítico"
+    "observacoes": "Equipamento crítico"
   },
   {
     "numeroPatrimonio": "PAT-010",
     "descricao": "Arquivo de aço 4 gavetas",
-    "secretaria": "Administrativo",
-    "sala": "302",
+    "secretariaNome": "Administração",
+    "salaNome": "Sala 302",
     "categoria": "Móvel",
     "status": "conferido",
-    "estadoConservacao": "regular",
-    "observacoes": ""
+    "estadoConservacao": "regular"
+  },
+  {
+    "numeroPatrimonio": "PAT-011",
+    "descricao": "Nobreak SMS 1200VA (desativado)",
+    "secretariaNome": "Tecnologia da Informação",
+    "salaNome": "Sala 110",
+    "categoria": "Energia",
+    "status": "pendente",
+    "estadoConservacao": "inservivel",
+    "observacoes": "Patrimônio desativado para testes",
+    "ativo": false
   }
 ]
