@@ -4,7 +4,8 @@
     "dev": "tsx --watch --env-file=.env src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "seed": "tsx --env-file=.env src/scripts/seed.ts"
+    "seed": "tsx --env-file=.env src/scripts/seed.ts",
+    "token": "tsx --env-file=.env src/scripts/gerar-token.ts"
   },
   "repository": {
     "type": "git",
@@ -19,12 +20,14 @@
     "jsonwebtoken": "^9.0.3",
     "mongodb": "^7.6.0",
     "mongoose": "^9.9.5",
+    "multer": "^2.5.0",
     "typescript": "^7.0.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
+    "@types/multer": "^2.3.0",
     "@types/node": "^26.4.1",
     "tsx": "^4.23.13"
   }
