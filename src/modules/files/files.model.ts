@@ -32,6 +32,11 @@ const arquivoSchema = new Schema<IArquivo>(
       type: Number,
       required: true,
     },
+    //apenas uma foto por patrimônio fica com principal = true
+    principal: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

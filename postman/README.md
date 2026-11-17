@@ -1,12 +1,19 @@
 # Coleção do Postman
 
+Há duas coleções:
+
+- **`apresentacao.postman_collection.json`** — 12 passos, em ordem, para a apresentação.
+- `inventario-api.postman_collection.json` — coleção completa (60+ requisições), para consulta e testes detalhados.
+
+Instruções
+
 ## Importar
 
 Postman → **Import** → arraste `inventario-api.postman_collection.json`.
 
 ## Configurar (uma vez)
 
-Clique na coleção → aba **Variables** e preencha:
+Clicar na coleção → aba **Variables** e preencha:
 
 | Variável           | Valor                                                                                                          |
 | ------------------ | -------------------------------------------------------------------------------------------------------------- |
@@ -24,7 +31,7 @@ Os demais usuários do seed usam a senha `Teste@123` (variável `senhaTeste`).
 3. **01 - Carregar IDs** → rode as 3 requisições (salvam os IDs do seed nas variáveis).
 4. Use as demais pastas. Quando a descrição disser "faça login como…", rode o login correspondente na pasta 00 antes.
 
-clique com o botão direito numa pasta → **Run folder** para executar todas as requisições em sequência e ver os testes (✔/✖) de status.
+Clicar com o botão direito numa pasta → **Run folder** para executar todas as requisições em sequência e ver os testes (✔/✖) de status.
 
 ## Demonstração
 

@@ -10,5 +10,7 @@ filesRoutes.use(autenticar);
 filesRoutes.post("/patrimonio/:patrimonioId", uploadFoto, filesController.upload);
 filesRoutes.get("/patrimonio/:patrimonioId", filesController.findByPatrimonio);
 filesRoutes.get("/:id", filesController.download);
+filesRoutes.patch("/:id/principal", filesController.definirPrincipal);
+filesRoutes.delete("/:id", filesController.remover);
 
 export default filesRoutes;

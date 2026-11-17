@@ -8,6 +8,7 @@ export interface IArquivo {
   nomeArquivo: string;
   tipo: string;
   tamanho: number;
+  principal: boolean; //true = foto que aparece no card do patrimônio
   createdAt?: Date;
   updatedAt?: Date;
 }

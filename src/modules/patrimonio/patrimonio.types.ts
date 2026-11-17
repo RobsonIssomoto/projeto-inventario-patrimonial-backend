@@ -13,6 +13,7 @@ export interface IPatrimonio {
   estadoConservacao: EstadoConservacao;
   observacoes?: string;
   ativo: boolean;
+  fotoPrincipal?: Types.ObjectId | null; //foto exibida no card (definida pelo módulo de arquivos)
   createdAt?: Date;
   updatedAt?: Date;
 }

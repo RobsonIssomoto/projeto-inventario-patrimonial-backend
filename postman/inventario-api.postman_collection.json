@@ -1,6 +1,6 @@
 {
   "info": {
-    "_postman_id": "2a5fc926-f6e7-4fd0-9902-b70646a1bc12",
+    "_postman_id": "46bbf103-72b4-485b-9348-99b05ecd1d74",
     "name": "Inventário Patrimonial - API (demonstração)",
     "description": "Coleção de demonstração da API.\n\n1. Preencha as variáveis firebaseApiKey, senhaAdmin e emailNovoUsuario (aba Variables da coleção).\n2. Rode `npm run seed`.\n3. Pasta 00: Login - Administrador.\n4. Pasta 01: rode as 3 requisições para carregar os IDs.\n5. Use as demais pastas, trocando de usuário pela pasta 00 quando indicado.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -1855,6 +1855,64 @@
               "raw": "{{baseUrl}}/arquivos/{{arquivoId}}"
             },
             "description": "O Postman mostra a imagem na aba de resposta."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Definir foto como principal",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/arquivos/{{arquivoId}}/principal"
+            },
+            "description": "A foto principal aparece no card da lista de patrimônios.",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Excluir foto",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/arquivos/{{arquivoId}}"
+            },
+            "description": "Se era a principal, a foto mais recente que sobrou vira a principal."
           },
           "event": [
             {

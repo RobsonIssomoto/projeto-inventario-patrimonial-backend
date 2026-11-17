@@ -1,0 +1,402 @@
+{
+  "info": {
+    "_postman_id": "48315c8e-f061-4964-a76d-1cd00153ef74",
+    "name": "Inventário - Apresentação (12 passos)",
+    "description": "Versão curta para a apresentação. Rode de cima para baixo.\n\nAntes: aba **Variables** → preencha firebaseApiKey, senhaAdmin e emailNovoUsuario. Depois rode `npm run seed` e os passos 1 e 2.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "1. Entrar como Administrador",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={{firebaseApiKey}}"
+        },
+        "description": "Faz login no Firebase como **Administrador**. O token fica salvo e vale por 1 hora.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"admin@email.com\",\n  \"password\": \"{{senhaAdmin}}\",\n  \"returnSecureToken\": true\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Guarda o token do Firebase; as próximas requisições usam ele automaticamente",
+              "pm.collectionVariables.set(\"token\", pm.response.json().idToken);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Preparar (buscar IDs do seed)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/secretarias"
+        },
+        "description": "Rode uma vez depois do seed. Não precisa mostrar na apresentação."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Busca e guarda os IDs que as próximas requisições precisam.",
+              "const siglas = {TI: \"secretariaTi\", EDU: \"secretariaEducacao\", SAU: \"secretariaSaude\"};",
+              "pm.response.json().forEach(s => { if (siglas[s.sigla]) pm.collectionVariables.set(siglas[s.sigla], s._id); });",
+              "const cabecalho = { Authorization: \"Bearer \" + pm.collectionVariables.get(\"token\") };",
+              "pm.sendRequest({ url: pm.collectionVariables.get(\"baseUrl\") + \"/salas\", header: cabecalho }, (erro, resposta) => {",
+              "  const sala = resposta.json().find(s => s.nome === \"Sala 101\");",
+              "  if (sala) pm.collectionVariables.set(\"salaTi101\", sala._id);",
+              "});",
+              "pm.sendRequest({ url: pm.collectionVariables.get(\"baseUrl\") + \"/patrimonios/numero/PAT-012\", header: cabecalho }, (erro, resposta) => {",
+              "  pm.collectionVariables.set(\"patrimonioSwitch\", resposta.json().dados._id);",
+              "});",
+              "pm.test(\"IDs carregados\", () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Cadastrar usuário (envia e-mail de senha)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/usuarios"
+        },
+        "description": "**O que mostrar:** o app não tem tela de cadastro de usuário, mas a API tem. O usuário é criado no Firebase e no banco, e o Firebase envia um e-mail para ele definir a senha. Abra o e-mail para mostrar.\n\nPara repetir, troque o e-mail (ex.: seuemail+demo2@gmail.com).",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nome\": \"Usuário Demonstração\",\n  \"email\": \"{{emailNovoUsuario}}\",\n  \"secretaria\": \"{{secretariaEducacao}}\",\n  \"perfil\": \"operador\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "4. Listar patrimônios da Saúde (filtro do administrador)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/patrimonios?secretaria={{secretariaSaude}}"
+        },
+        "description": "**O que mostrar:** o administrador pode ver qualquer secretaria. Um operador só vê a dele."
+      }
+    },
+    {
+      "name": "5. Cadastrar patrimônio",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/patrimonios"
+        },
+        "description": "**O que mostrar:** cadastro feito pela API (sem tela no app). Se rodar duas vezes, a API recusa: o número patrimonial é único.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"numeroPatrimonio\": \"PAT-900\",\n  \"descricao\": \"Webcam Logitech\",\n  \"secretaria\": \"{{secretariaTi}}\",\n  \"sala\": \"{{salaTi101}}\",\n  \"categoria\": \"Periférico\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.collectionVariables.set(\"patrimonioNovo\", pm.response.json().dados._id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Editar descrição e categoria",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/patrimonios/{{patrimonioNovo}}"
+        },
+        "description": "**O que mostrar:** é o endpoint de alteração dos dados cadastrais (nome e tipo). A tela ainda não foi feita, mas a API já faz.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"descricao\": \"Webcam Logitech C920 Full HD\",\n  \"categoria\": \"Videoconferência\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "7. Desativar patrimônio",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/patrimonios/{{patrimonioNovo}}"
+        },
+        "description": "**O que mostrar:** o patrimônio não é apagado do banco, só fica inativo (exclusão lógica). Assim o histórico é preservado."
+      }
+    },
+    {
+      "name": "8. Entrar como Gerente da TI",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={{firebaseApiKey}}"
+        },
+        "description": "Faz login no Firebase como **Gerente da TI**. O token fica salvo e vale por 1 hora.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"gerente.ti@teste.com\",\n  \"password\": \"Teste@123\",\n  \"returnSecureToken\": true\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Guarda o token do Firebase; as próximas requisições usam ele automaticamente",
+              "pm.collectionVariables.set(\"token\", pm.response.json().idToken);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "9. Gerente envia patrimônio para a Educação",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/movimentacoes"
+        },
+        "description": "**O que mostrar:** a transferência fica **pendente** até o gerente da Educação (ou o admin) receber. Depois dá para mostrar no app, na tela de Recebimentos, logado como admin.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"patrimonioId\": \"{{patrimonioSwitch}}\",\n  \"tipo\": \"transferencia\",\n  \"dados\": {\n    \"secretariaDestino\": \"{{secretariaEducacao}}\",\n    \"motivo\": \"Montagem do laboratório\",\n    \"justificativa\": \"Switch necessário para o novo laboratório de informática.\"\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "10. Entrar como Operador da TI",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={{firebaseApiKey}}"
+        },
+        "description": "Faz login no Firebase como **Operador da TI**. O token fica salvo e vale por 1 hora.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"operador.ti@teste.com\",\n  \"password\": \"Teste@123\",\n  \"returnSecureToken\": true\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "auth": {
+          "type": "noauth"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Guarda o token do Firebase; as próximas requisições usam ele automaticamente",
+              "pm.collectionVariables.set(\"token\", pm.response.json().idToken);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "11. Operador tenta transferir (bloqueado)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/movimentacoes"
+        },
+        "description": "**O que mostrar:** resposta **403**. A permissão é conferida na API, não só escondendo o botão no app.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"patrimonioId\": \"{{patrimonioSwitch}}\",\n  \"tipo\": \"transferencia\",\n  \"dados\": {\n    \"secretariaDestino\": \"{{secretariaSaude}}\",\n    \"motivo\": \"Teste\",\n    \"justificativa\": \"Operador não pode transferir.\"\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "12. Requisição sem login (bloqueada)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/patrimonios"
+        },
+        "description": "**O que mostrar:** resposta **401**. Sem o token do Firebase, nenhuma rota responde.",
+        "auth": {
+          "type": "noauth"
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "firebaseApiKey",
+      "value": "COLE_AQUI_A_CHAVE_WEB_DO_FIREBASE",
+      "type": "string"
+    },
+    {
+      "key": "senhaAdmin",
+      "value": "COLE_AQUI_A_SENHA_DO_ADMIN",
+      "type": "string"
+    },
+    {
+      "key": "emailNovoUsuario",
+      "value": "seuemail+demo1@gmail.com",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "secretariaTi",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "secretariaEducacao",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "secretariaSaude",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "salaTi101",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "patrimonioSwitch",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "patrimonioNovo",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

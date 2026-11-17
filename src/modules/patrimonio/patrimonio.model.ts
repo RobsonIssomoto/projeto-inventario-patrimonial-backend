@@ -45,6 +45,12 @@ const patrimonioSchema = new Schema<IPatrimonio>(
       type: String,
       trim: true,
     },
+    //foto exibida no card da lista; é preenchida e atualizada pelo módulo de arquivos
+    fotoPrincipal: {
+      type: Schema.Types.ObjectId,
+      ref: "Arquivo",
+      default: null,
+    },
     ativo: {
       type: Boolean,
       default: true,
