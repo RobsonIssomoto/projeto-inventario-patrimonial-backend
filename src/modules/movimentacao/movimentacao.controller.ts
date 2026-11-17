@@ -155,6 +155,9 @@ class MovimentacaoController {
           "Para mudar de sala na mesma secretaria, utilize o tipo atualizacao_localizacao.",
           "Não é possível alterar a localização ou criar outra transferência enquanto houver transferência pendente.",
           "Já existe uma transferência pendente para este patrimônio.",
+          "Secretaria de destino não encontrada.",
+          "A secretaria de destino está inativa.",
+          "A secretaria de destino deve ser diferente da secretaria atual.",
         ];
 
         if (mensagensEsperadas.includes(error.message)) {

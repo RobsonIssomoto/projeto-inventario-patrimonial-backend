@@ -49,6 +49,7 @@ class MovimentacaoService {
 
       if (data.dados.status) patrimonio.status = data.dados.status;
       if (data.dados.estadoConservacao) patrimonio.estadoConservacao = data.dados.estadoConservacao;
+      if (data.dados.observacoes !== undefined) patrimonio.observacoes = data.dados.observacoes;
     } else if (data.tipo === "atualizacao_localizacao") {
       const salaDestino = await Sala.findById(data.dados.salaDestino);
 

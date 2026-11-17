@@ -14,6 +14,26 @@
       "nome": "Administração",
       "sigla": "ADM",
       "ativa": true
+    },
+    {
+      "nome": "Educação",
+      "sigla": "EDU",
+      "ativa": true
+    },
+    {
+      "nome": "Saúde",
+      "sigla": "SAU",
+      "ativa": true
+    },
+    {
+      "nome": "Obras e Serviços Públicos",
+      "sigla": "OSP",
+      "ativa": true
+    },
+    {
+      "nome": "Turismo e Cultura",
+      "sigla": "TUR",
+      "ativa": false
     }
   ],
   "salas": [
@@ -33,6 +53,11 @@
       "ativa": true
     },
     {
+      "nome": "Data Center",
+      "secretariaNome": "Tecnologia da Informação",
+      "ativa": true
+    },
+    {
       "nome": "Sala 104",
       "secretariaNome": "Tecnologia da Informação",
       "ativa": false
@@ -48,6 +73,11 @@
       "ativa": true
     },
     {
+      "nome": "Arquivo do RH",
+      "secretariaNome": "Recursos Humanos",
+      "ativa": true
+    },
+    {
       "nome": "Sala 302",
       "secretariaNome": "Administração",
       "ativa": true
@@ -56,9 +86,66 @@
       "nome": "Sala 303",
       "secretariaNome": "Administração",
       "ativa": true
+    },
+    {
+      "nome": "Almoxarifado Central",
+      "secretariaNome": "Administração",
+      "ativa": true
+    },
+    {
+      "nome": "Diretoria de Ensino",
+      "secretariaNome": "Educação",
+      "ativa": true
+    },
+    {
+      "nome": "Sala de Reuniões da Educação",
+      "secretariaNome": "Educação",
+      "ativa": true
+    },
+    {
+      "nome": "Laboratório de Informática",
+      "secretariaNome": "Educação",
+      "ativa": true
+    },
+    {
+      "nome": "Recepção UBS Centro",
+      "secretariaNome": "Saúde",
+      "ativa": true
+    },
+    {
+      "nome": "Consultório 1 UBS Centro",
+      "secretariaNome": "Saúde",
+      "ativa": true
+    },
+    {
+      "nome": "Farmácia UBS Centro",
+      "secretariaNome": "Saúde",
+      "ativa": true
+    },
+    {
+      "nome": "Escritório de Obras",
+      "secretariaNome": "Obras e Serviços Públicos",
+      "ativa": true
+    },
+    {
+      "nome": "Garagem de Máquinas",
+      "secretariaNome": "Obras e Serviços Públicos",
+      "ativa": true
+    },
+    {
+      "nome": "Centro de Informações Turísticas",
+      "secretariaNome": "Turismo e Cultura",
+      "ativa": true
     }
   ],
   "usuarios": [
+    {
+      "nome": "Administrador",
+      "email": "admin@email.com",
+      "perfil": "administrador",
+      "secretariaNome": "Tecnologia da Informação",
+      "manterSenha": true
+    },
     {
       "nome": "Gerente TI",
       "email": "gerente.ti@teste.com",

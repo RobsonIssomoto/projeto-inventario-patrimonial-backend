@@ -18,4 +18,6 @@ export const ENV = {
   MONGO_URI: obterVariavelAmbiente("MONGO_URI"),
   PORT: obterVariavelAmbiente("PORT", "3000"),
   FIREBASE_SERVICE_ACCOUNT_PATH: path.resolve(obterVariavelAmbiente("FIREBASE_SERVICE_ACCOUNT_PATH")),
+  //pasta onde as fotos dos patrimônios são gravadas (no Docker: /app/uploads)
+  UPLOADS_DIR: path.resolve(obterVariavelAmbiente("UPLOADS_DIR", "uploads")),
 };

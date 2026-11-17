@@ -7,9 +7,7 @@ const salaSchema = new Schema<ISala>(
     nome: {
       type: String,
       required: true,
-      unique: true,
       trim: true,
-      index: true,
     },
     secretaria: {
       type: Schema.Types.ObjectId,

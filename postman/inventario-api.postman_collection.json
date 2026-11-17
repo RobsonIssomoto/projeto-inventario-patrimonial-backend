@@ -1,0 +1,2195 @@
+{
+  "info": {
+    "_postman_id": "2a5fc926-f6e7-4fd0-9902-b70646a1bc12",
+    "name": "Inventário Patrimonial - API (demonstração)",
+    "description": "Coleção de demonstração da API.\n\n1. Preencha as variáveis firebaseApiKey, senhaAdmin e emailNovoUsuario (aba Variables da coleção).\n2. Rode `npm run seed`.\n3. Pasta 00: Login - Administrador.\n4. Pasta 01: rode as 3 requisições para carregar os IDs.\n5. Use as demais pastas, trocando de usuário pela pasta 00 quando indicado.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "00 - Login (troca de usuário)",
+      "item": [
+        {
+          "name": "Login - Administrador",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={{firebaseApiKey}}"
+            },
+            "description": "Faz login no Firebase e salva o idToken na variável {{token}}, usada por todas as outras requisições.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{emailAdmin}}\",\n  \"password\": \"{{senhaAdmin}}\",\n  \"returnSecureToken\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "const j = pm.response.json();",
+                  "pm.collectionVariables.set(\"token\", j.idToken);",
+                  "pm.collectionVariables.set(\"usuarioAtual\", \"Administrador\");",
+                  "console.log(\"Token salvo para: Administrador\");"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login - Gerente TI",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={{firebaseApiKey}}"
+            },
+            "description": "Faz login no Firebase e salva o idToken na variável {{token}}, usada por todas as outras requisições.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{emailGerenteTi}}\",\n  \"password\": \"{{senhaTeste}}\",\n  \"returnSecureToken\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "const j = pm.response.json();",
+                  "pm.collectionVariables.set(\"token\", j.idToken);",
+                  "pm.collectionVariables.set(\"usuarioAtual\", \"Gerente TI\");",
+                  "console.log(\"Token salvo para: Gerente TI\");"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login - Gerente RH",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={{firebaseApiKey}}"
+            },
+            "description": "Faz login no Firebase e salva o idToken na variável {{token}}, usada por todas as outras requisições.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{emailGerenteRh}}\",\n  \"password\": \"{{senhaTeste}}\",\n  \"returnSecureToken\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "const j = pm.response.json();",
+                  "pm.collectionVariables.set(\"token\", j.idToken);",
+                  "pm.collectionVariables.set(\"usuarioAtual\", \"Gerente RH\");",
+                  "console.log(\"Token salvo para: Gerente RH\");"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login - Gerente Administração",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={{firebaseApiKey}}"
+            },
+            "description": "Faz login no Firebase e salva o idToken na variável {{token}}, usada por todas as outras requisições.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{emailGerenteAdm}}\",\n  \"password\": \"{{senhaTeste}}\",\n  \"returnSecureToken\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "const j = pm.response.json();",
+                  "pm.collectionVariables.set(\"token\", j.idToken);",
+                  "pm.collectionVariables.set(\"usuarioAtual\", \"Gerente Administração\");",
+                  "console.log(\"Token salvo para: Gerente Administração\");"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login - Operador TI",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={{firebaseApiKey}}"
+            },
+            "description": "Faz login no Firebase e salva o idToken na variável {{token}}, usada por todas as outras requisições.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{emailOperadorTi}}\",\n  \"password\": \"{{senhaTeste}}\",\n  \"returnSecureToken\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "const j = pm.response.json();",
+                  "pm.collectionVariables.set(\"token\", j.idToken);",
+                  "pm.collectionVariables.set(\"usuarioAtual\", \"Operador TI\");",
+                  "console.log(\"Token salvo para: Operador TI\");"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login - Operador RH",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={{firebaseApiKey}}"
+            },
+            "description": "Faz login no Firebase e salva o idToken na variável {{token}}, usada por todas as outras requisições.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{emailOperadorRh}}\",\n  \"password\": \"{{senhaTeste}}\",\n  \"returnSecureToken\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "const j = pm.response.json();",
+                  "pm.collectionVariables.set(\"token\", j.idToken);",
+                  "pm.collectionVariables.set(\"usuarioAtual\", \"Operador RH\");",
+                  "console.log(\"Token salvo para: Operador RH\");"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "description": "Rode um destes antes das outras pastas. O token vale 1 hora."
+    },
+    {
+      "name": "01 - Carregar IDs (rodar como Administrador após o seed)",
+      "item": [
+        {
+          "name": "Carregar secretarias",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/secretarias"
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "const mapa = {TI:\"secretariaTiId\", RH:\"secretariaRhId\", ADM:\"secretariaAdmId\", EDU:\"secretariaEduId\", SAU:\"secretariaSauId\", OSP:\"secretariaOspId\", TUR:\"secretariaTurId\"};",
+                  "pm.response.json().forEach(s => { if (mapa[s.sigla]) pm.collectionVariables.set(mapa[s.sigla], s._id); });",
+                  "console.log(\"IDs de secretarias salvos\");"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Carregar salas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/salas"
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "const mapa = {\"Sala 101\":\"salaTi101Id\",\"Sala 102\":\"salaTi102Id\",\"Sala 104\":\"salaTi104InativaId\",\"Data Center\":\"salaTiDataCenterId\",\"Sala 205\":\"salaRh205Id\",\"Sala 206\":\"salaRh206Id\",\"Sala 302\":\"salaAdm302Id\",\"Diretoria de Ensino\":\"salaEduDiretoriaId\"};",
+                  "pm.response.json().forEach(s => { if (mapa[s.nome]) pm.collectionVariables.set(mapa[s.nome], s._id); });",
+                  "console.log(\"IDs de salas salvos\");"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Carregar patrimônios",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/patrimonios"
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "const lista = Array.isArray(pm.response.json()) ? pm.response.json() : pm.response.json().dados;",
+                  "const mapa = {\"PAT-001\":\"pat001Id\",\"PAT-003\":\"pat003Id\",\"PAT-007\":\"pat007Id\",\"PAT-008\":\"pat008Id\",\"PAT-010\":\"pat010Id\",\"PAT-012\":\"pat012Id\",\"PAT-017\":\"pat017Id\"};",
+                  "lista.forEach(p => { if (mapa[p.numeroPatrimonio]) pm.collectionVariables.set(mapa[p.numeroPatrimonio], p._id); });",
+                  "console.log(\"IDs de patrimônios salvos\");"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "description": "Lê os IDs gerados pelo seed e salva nas variáveis da coleção. Rode uma vez depois de cada seed, logado como Administrador."
+    },
+    {
+      "name": "02 - Usuários",
+      "item": [
+        {
+          "name": "Meu perfil (GET /usuarios/eu)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/eu"
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Cadastrar usuário e enviar e-mail de definição de senha",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios"
+            },
+            "description": "Logado como Administrador ou Gerente. Cria o usuário no Firebase e no MongoDB e pede ao Firebase para enviar o e-mail de definição de senha para {{emailNovoUsuario}}. O link também volta na resposta (linkDefinicaoSenha). Para repetir a demonstração, use outro e-mail (ex.: seuemail+demo2@gmail.com).",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Usuário Demonstração\",\n  \"email\": \"{{emailNovoUsuario}}\",\n  \"secretaria\": \"{{secretariaEduId}}\",\n  \"perfil\": \"operador\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", () => pm.response.to.have.status(201));",
+                  "const j = pm.response.json();",
+                  "pm.test(\"E-mail enviado pelo Firebase\", () => pm.expect(j.dados.emailEnviado).to.eql(true));",
+                  "pm.collectionVariables.set(\"novoUsuarioUid\", j.dados.usuario.uid);",
+                  "console.log(\"Link de definição de senha:\", j.dados.linkDefinicaoSenha);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Consultar usuário pelo UID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/{{novoUsuarioUid}}"
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "ERRO - cadastrar com e-mail repetido (409)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios"
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Usuário Repetido\",\n  \"email\": \"{{emailOperadorTi}}\",\n  \"secretaria\": \"{{secretariaTiId}}\",\n  \"perfil\": \"operador\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 409\", () => pm.response.to.have.status(409));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "ERRO - cadastrar em secretaria inativa (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios"
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Usuário Turismo\",\n  \"email\": \"turismo.inexistente@teste.com\",\n  \"secretaria\": \"{{secretariaTurId}}\",\n  \"perfil\": \"operador\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 400\", () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "ERRO - operador tentando cadastrar usuário (403)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios"
+            },
+            "description": "Faça login como Operador TI antes.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Teste Permissão\",\n  \"email\": \"permissao@teste.com\",\n  \"secretaria\": \"{{secretariaTiId}}\",\n  \"perfil\": \"operador\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 403\", () => pm.response.to.have.status(403));"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "description": ""
+    },
+    {
+      "name": "03 - Secretarias",
+      "item": [
+        {
+          "name": "Listar secretarias",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/secretarias"
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Consultar secretaria (TI)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/secretarias/{{secretariaTiId}}"
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Cadastrar secretaria (Administrador)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/secretarias"
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Meio Ambiente\",\n  \"sigla\": \"SMA\",\n  \"ativa\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set(\"novaSecretariaId\", pm.response.json()._id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Atualizar secretaria",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/secretarias/{{novaSecretariaId}}"
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Meio Ambiente e Agricultura\",\n  \"sigla\": \"SMAA\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Desativar secretaria",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/secretarias/{{novaSecretariaId}}"
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ativa\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "ERRO - gerente tentando cadastrar secretaria (403)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/secretarias"
+            },
+            "description": "Faça login como Gerente antes.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Esportes\",\n  \"sigla\": \"ESP\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 403\", () => pm.response.to.have.status(403));"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "description": ""
+    },
+    {
+      "name": "04 - Salas",
+      "item": [
+        {
+          "name": "Listar salas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/salas"
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar salas da TI",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/salas?secretaria={{secretariaTiId}}"
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar somente salas ativas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/salas?ativa=true"
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Cadastrar sala (Gerente/Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/salas"
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Sala de Treinamento\",\n  \"secretaria\": \"{{secretariaTiId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set(\"novaSalaId\", pm.response.json()._id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Renomear sala",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/salas/{{novaSalaId}}"
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Sala de Treinamento 2\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Desativar sala",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/salas/{{novaSalaId}}/desativar"
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "description": ""
+    },
+    {
+      "name": "05 - Patrimônios",
+      "item": [
+        {
+          "name": "Listar patrimônios (da secretaria do usuário)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/patrimonios"
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Buscar por texto (notebook)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/patrimonios?busca=notebook"
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Filtrar por status pendente",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/patrimonios?status=pendente"
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Filtrar por categoria",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/patrimonios?categoria=Monitor"
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Filtrar por sala",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/patrimonios?sala={{salaTi101Id}}"
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Admin - filtrar por secretaria (Saúde)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/patrimonios?secretaria={{secretariaSauId}}"
+            },
+            "description": "Só o administrador pode usar o filtro de secretaria."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Consultar pelo número (PAT-001)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/patrimonios/numero/PAT-001"
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Cadastrar patrimônio",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/patrimonios"
+            },
+            "description": "Logado como Administrador ou usuário da TI.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numeroPatrimonio\": \"PAT-900\",\n  \"descricao\": \"Webcam Logitech C920\",\n  \"secretaria\": \"{{secretariaTiId}}\",\n  \"sala\": \"{{salaTi101Id}}\",\n  \"categoria\": \"Periférico\",\n  \"observacoes\": \"Cadastrado pelo Postman\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set(\"novoPatrimonioId\", pm.response.json().dados._id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Alterar descrição e categoria do patrimônio",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/patrimonios/{{novoPatrimonioId}}"
+            },
+            "description": "Endpoint de edição dos dados cadastrais (descrição/nome e categoria/tipo). Ainda sem tela no app.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"descricao\": \"Webcam Logitech C920 Full HD\",\n  \"categoria\": \"Videoconferência\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Desativar patrimônio (exclusão lógica)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/patrimonios/{{novoPatrimonioId}}"
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "ERRO - número patrimonial repetido",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/patrimonios"
+            },
+            "description": "Deve ser recusado (RN02).",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numeroPatrimonio\": \"PAT-001\",\n  \"descricao\": \"Duplicado\",\n  \"secretaria\": \"{{secretariaTiId}}\",\n  \"sala\": \"{{salaTi101Id}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 409\", () => pm.response.to.have.status(409));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "ERRO - cadastrar em sala inativa",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/patrimonios"
+            },
+            "description": "Deve ser recusado (RN03).",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"numeroPatrimonio\": \"PAT-901\",\n  \"descricao\": \"Teste sala inativa\",\n  \"secretaria\": \"{{secretariaTiId}}\",\n  \"sala\": \"{{salaTi104InativaId}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "ERRO - operador RH consultando patrimônio da TI (404)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/patrimonios/numero/PAT-001"
+            },
+            "description": "Faça login como Operador RH antes. A API responde 404 (e não 403) para não revelar que o bem existe em outra secretaria."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 404\", () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "description": ""
+    },
+    {
+      "name": "06 - Movimentações (conferência e troca de sala)",
+      "item": [
+        {
+          "name": "Registrar conferência (PAT-001)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/movimentacoes"
+            },
+            "description": "Operador TI, Gerente TI ou Administrador.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patrimonioId\": \"{{pat001Id}}\",\n  \"tipo\": \"conferencia\",\n  \"dados\": {\n    \"status\": \"conferido\",\n    \"estadoConservacao\": \"regular\",\n    \"observacoes\": \"Conferido pelo Postman\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", () => pm.response.to.have.status(201));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Trocar de sala na mesma secretaria (PAT-001 -> Sala 102)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/movimentacoes"
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patrimonioId\": \"{{pat001Id}}\",\n  \"tipo\": \"atualizacao_localizacao\",\n  \"dados\": {\n    \"salaDestino\": \"{{salaTi102Id}}\",\n    \"motivo\": \"Troca de sala\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", () => pm.response.to.have.status(201));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Histórico do patrimônio (PAT-001)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/movimentacoes?patrimonio={{pat001Id}}"
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Histórico filtrado por tipo",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/movimentacoes?tipo=transferencia"
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "ERRO - conferência com status inválido (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/movimentacoes"
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patrimonioId\": \"{{pat001Id}}\",\n  \"tipo\": \"conferencia\",\n  \"dados\": {\n    \"status\": \"ok\",\n    \"estadoConservacao\": \"bom\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 400\", () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "ERRO - trocar para sala de outra secretaria (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/movimentacoes"
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patrimonioId\": \"{{pat001Id}}\",\n  \"tipo\": \"atualizacao_localizacao\",\n  \"dados\": {\n    \"salaDestino\": \"{{salaRh205Id}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 400\", () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "ERRO - trocar sala de bem com transferência pendente (PAT-008) (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/movimentacoes"
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patrimonioId\": \"{{pat008Id}}\",\n  \"tipo\": \"atualizacao_localizacao\",\n  \"dados\": {\n    \"salaDestino\": \"{{salaTi101Id}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 400\", () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "description": ""
+    },
+    {
+      "name": "07 - Transferências",
+      "item": [
+        {
+          "name": "ERRO - operador tentando transferir (403)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/movimentacoes"
+            },
+            "description": "Faça login como Operador TI antes.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patrimonioId\": \"{{pat012Id}}\",\n  \"tipo\": \"transferencia\",\n  \"dados\": {\n    \"secretariaDestino\": \"{{secretariaEduId}}\",\n    \"motivo\": \"Teste\",\n    \"justificativa\": \"Operador não pode transferir.\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 403\", () => pm.response.to.have.status(403));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Gerente TI - enviar PAT-012 para Educação",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/movimentacoes"
+            },
+            "description": "Faça login como Gerente TI antes.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patrimonioId\": \"{{pat012Id}}\",\n  \"tipo\": \"transferencia\",\n  \"dados\": {\n    \"secretariaDestino\": \"{{secretariaEduId}}\",\n    \"motivo\": \"Montagem do laboratório\",\n    \"justificativa\": \"Switch necessário para o novo laboratório de informática.\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set(\"transferenciaId\", pm.response.json().dados._id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "ERRO - justificativa curta (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/movimentacoes"
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patrimonioId\": \"{{pat001Id}}\",\n  \"tipo\": \"transferencia\",\n  \"dados\": {\n    \"secretariaDestino\": \"{{secretariaRhId}}\",\n    \"motivo\": \"Teste\",\n    \"justificativa\": \"curta\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 400\", () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "ERRO - destino é secretaria inativa (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/movimentacoes"
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patrimonioId\": \"{{pat001Id}}\",\n  \"tipo\": \"transferencia\",\n  \"dados\": {\n    \"secretariaDestino\": \"{{secretariaTurId}}\",\n    \"motivo\": \"Teste\",\n    \"justificativa\": \"Secretaria de Turismo está inativa.\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 400\", () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Gerente TI - cancelar a transferência do PAT-012",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/movimentacoes/{{transferenciaId}}/cancelar"
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Gerente RH - listar recebimentos pendentes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/movimentacoes/recebimentos"
+            },
+            "description": "Faça login como Gerente RH antes. O seed deixa o PAT-008 (TI -> RH) pendente."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "const lista = pm.response.json();",
+                  "const pendente = lista.find(m => m.patrimonio && (m.patrimonio._id === pm.collectionVariables.get(\"pat008Id\") || m.patrimonio === pm.collectionVariables.get(\"pat008Id\")));",
+                  "if (pendente) { pm.collectionVariables.set(\"recebimentoId\", pendente._id); console.log(\"Recebimento do PAT-008:\", pendente._id); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "ERRO - receber em sala de outra secretaria (400)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/movimentacoes/{{recebimentoId}}/receber"
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"salaDestinoId\": \"{{salaTi101Id}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 400\", () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Gerente RH - receber PAT-008 na Sala 205",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/movimentacoes/{{recebimentoId}}/receber"
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"salaDestinoId\": \"{{salaRh205Id}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "description": "Fluxo: gerente da origem envia (pendente) -> gerente do destino recebe escolhendo a sala, ou a origem cancela."
+    },
+    {
+      "name": "08 - Fotos dos patrimônios",
+      "item": [
+        {
+          "name": "Enviar foto do PAT-001 (form-data)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/arquivos/patrimonio/{{pat001Id}}"
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "foto",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "description": "Na aba Body, no campo 'foto', clique em Select Files e escolha uma imagem JPG, PNG ou WEBP (até 5 MB)."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", () => pm.response.to.have.status(201));",
+                  "pm.collectionVariables.set(\"arquivoId\", pm.response.json().dados._id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar fotos do PAT-001",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/arquivos/patrimonio/{{pat001Id}}"
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Baixar/visualizar foto",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/arquivos/{{arquivoId}}"
+            },
+            "description": "O Postman mostra a imagem na aba de resposta."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "ERRO - operador RH vendo fotos de patrimônio da TI (404)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/arquivos/patrimonio/{{pat001Id}}"
+            },
+            "description": "Faça login como Operador RH antes."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 404\", () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "description": ""
+    },
+    {
+      "name": "09 - Segurança",
+      "item": [
+        {
+          "name": "ERRO - sem token (401)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/patrimonios"
+            },
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 401\", () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "ERRO - token inválido (401)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer token-invalido"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/patrimonios"
+            },
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 401\", () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Endpoint público de teste",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/teste"
+            },
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "description": ""
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api/v1",
+      "type": "string"
+    },
+    {
+      "key": "firebaseApiKey",
+      "value": "COLE_AQUI_A_CHAVE_WEB_DO_FIREBASE",
+      "type": "string"
+    },
+    {
+      "key": "senhaTeste",
+      "value": "Teste@123",
+      "type": "string"
+    },
+    {
+      "key": "emailAdmin",
+      "value": "admin@email.com",
+      "type": "string"
+    },
+    {
+      "key": "senhaAdmin",
+      "value": "COLE_AQUI_A_SENHA_DO_ADMIN",
+      "type": "string"
+    },
+    {
+      "key": "emailGerenteTi",
+      "value": "gerente.ti@teste.com",
+      "type": "string"
+    },
+    {
+      "key": "emailGerenteRh",
+      "value": "gerente.rh@teste.com",
+      "type": "string"
+    },
+    {
+      "key": "emailGerenteAdm",
+      "value": "gerente.administracao@teste.com",
+      "type": "string"
+    },
+    {
+      "key": "emailOperadorTi",
+      "value": "operador.ti@teste.com",
+      "type": "string"
+    },
+    {
+      "key": "emailOperadorRh",
+      "value": "operador.rh@teste.com",
+      "type": "string"
+    },
+    {
+      "key": "emailNovoUsuario",
+      "value": "seuemail+demo1@gmail.com",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "usuarioAtual",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "secretariaTiId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "secretariaRhId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "secretariaAdmId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "secretariaEduId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "secretariaSauId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "secretariaOspId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "secretariaTurId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "salaTi101Id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "salaTi102Id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "salaTi104InativaId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "salaTiDataCenterId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "salaRh205Id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "salaRh206Id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "salaAdm302Id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "salaEduDiretoriaId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "pat001Id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "pat003Id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "pat007Id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "pat008Id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "pat010Id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "pat012Id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "pat017Id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "novoUsuarioUid",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "novaSecretariaId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "novaSalaId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "novoPatrimonioId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "transferenciaId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "recebimentoId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "arquivoId",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

@@ -5,7 +5,7 @@ import { Types } from "mongoose";
 import Secretaria from "../secretaria/secretaria.model.js";
 
 class UsuarioService {
-  public async create(data: ICreateUsuarioDTO): Promise<{ usuario: IUsuario; linkDefinicaoSenha: string }> {
+  public async create(data: ICreateUsuarioDTO): Promise<{ usuario: IUsuario; linkDefinicaoSenha: string; emailEnviado: boolean }> {
     const secretaria = await this.validarSecretaria(data.secretaria);
 
     const usuarioFirebase = await firebaseAuth.createUser({
@@ -25,10 +25,47 @@ class UsuarioService {
 
     const linkDefinicaoSenha = await firebaseAuth.generatePasswordResetLink(data.email);
 
+    //o Admin SDK só gera o link; o envio do e-mail é feito pela API REST do Firebase
+    const emailEnviado = await this.enviarEmailDefinicaoSenha(data.email);
+
     return {
       usuario,
       linkDefinicaoSenha,
+      emailEnviado,
     };
+  }
+
+  //pede ao Firebase para enviar o e-mail de definição de senha (modelo "Redefinição de senha"
+  //configurado no console do Firebase). Retorna false se não houver chave ou se o envio falhar.
+  private async enviarEmailDefinicaoSenha(email: string): Promise<boolean> {
+    const chaveApiWeb = process.env.FIREBASE_WEB_API_KEY;
+
+    if (!chaveApiWeb) {
+      console.warn("FIREBASE_WEB_API_KEY não configurada: e-mail de definição de senha não enviado.");
+      return false;
+    }
+
+    try {
+      const resposta = await fetch(
+        `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${chaveApiWeb}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ requestType: "PASSWORD_RESET", email }),
+        },
+      );
+
+      if (!resposta.ok) {
+        const erro = await resposta.json().catch(() => null);
+        console.error("Falha ao enviar e-mail de definição de senha:", erro?.error?.message);
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      console.error("Falha ao enviar e-mail de definição de senha:", error);
+      return false;
+    }
   }
 
   public async findById(uid: string) {

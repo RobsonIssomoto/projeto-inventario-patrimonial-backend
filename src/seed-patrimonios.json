@@ -103,5 +103,366 @@
     "estadoConservacao": "inservivel",
     "observacoes": "Patrimônio desativado para testes",
     "ativo": false
+  },
+  {
+    "numeroPatrimonio": "PAT-012",
+    "descricao": "Switch Cisco Catalyst 24 portas",
+    "secretariaNome": "Tecnologia da Informação",
+    "salaNome": "Data Center",
+    "categoria": "Rede",
+    "status": "conferido",
+    "estadoConservacao": "bom"
+  },
+  {
+    "numeroPatrimonio": "PAT-013",
+    "descricao": "Rack de servidor 42U",
+    "secretariaNome": "Tecnologia da Informação",
+    "salaNome": "Data Center",
+    "categoria": "Infraestrutura",
+    "status": "conferido",
+    "estadoConservacao": "bom"
+  },
+  {
+    "numeroPatrimonio": "PAT-014",
+    "descricao": "Roteador Mikrotik RB4011",
+    "secretariaNome": "Tecnologia da Informação",
+    "salaNome": "Sala 110",
+    "categoria": "Rede",
+    "status": "pendente",
+    "estadoConservacao": "regular",
+    "observacoes": "Fonte com ruído"
+  },
+  {
+    "numeroPatrimonio": "PAT-015",
+    "descricao": "Notebook Lenovo ThinkPad E14",
+    "secretariaNome": "Tecnologia da Informação",
+    "salaNome": "Sala 101",
+    "categoria": "Notebook",
+    "status": "pendente",
+    "estadoConservacao": "bom"
+  },
+  {
+    "numeroPatrimonio": "PAT-016",
+    "descricao": "Monitor Samsung 27 polegadas",
+    "secretariaNome": "Tecnologia da Informação",
+    "salaNome": "Sala 102",
+    "categoria": "Monitor",
+    "status": "conferido",
+    "estadoConservacao": "novo"
+  },
+  {
+    "numeroPatrimonio": "PAT-017",
+    "descricao": "Desktop Dell OptiPlex 3080",
+    "secretariaNome": "Recursos Humanos",
+    "salaNome": "Sala 206",
+    "categoria": "Computador",
+    "status": "conferido",
+    "estadoConservacao": "bom"
+  },
+  {
+    "numeroPatrimonio": "PAT-018",
+    "descricao": "Monitor AOC 21,5 polegadas",
+    "secretariaNome": "Recursos Humanos",
+    "salaNome": "Sala 206",
+    "categoria": "Monitor",
+    "status": "pendente",
+    "estadoConservacao": "regular"
+  },
+  {
+    "numeroPatrimonio": "PAT-019",
+    "descricao": "Armário de aço 2 portas",
+    "secretariaNome": "Recursos Humanos",
+    "salaNome": "Arquivo do RH",
+    "categoria": "Móvel",
+    "status": "conferido",
+    "estadoConservacao": "regular",
+    "observacoes": "Porta com dobradiça solta"
+  },
+  {
+    "numeroPatrimonio": "PAT-020",
+    "descricao": "Impressora multifuncional Brother",
+    "secretariaNome": "Recursos Humanos",
+    "salaNome": "Sala 205",
+    "categoria": "Impressora",
+    "status": "nao_localizado",
+    "estadoConservacao": "bom",
+    "observacoes": "Não encontrada na sala 205"
+  },
+  {
+    "numeroPatrimonio": "PAT-021",
+    "descricao": "Cadeira giratória com braços",
+    "secretariaNome": "Recursos Humanos",
+    "salaNome": "Sala 206",
+    "categoria": "Móvel",
+    "status": "conferido",
+    "estadoConservacao": "ruim",
+    "observacoes": "Estofado rasgado"
+  },
+  {
+    "numeroPatrimonio": "PAT-022",
+    "descricao": "Desktop Positivo Master",
+    "secretariaNome": "Administração",
+    "salaNome": "Sala 303",
+    "categoria": "Computador",
+    "status": "conferido",
+    "estadoConservacao": "bom"
+  },
+  {
+    "numeroPatrimonio": "PAT-023",
+    "descricao": "Mesa de reunião oval 8 lugares",
+    "secretariaNome": "Administração",
+    "salaNome": "Sala 303",
+    "categoria": "Móvel",
+    "status": "conferido",
+    "estadoConservacao": "bom"
+  },
+  {
+    "numeroPatrimonio": "PAT-024",
+    "descricao": "Fragmentadora de papel Menno",
+    "secretariaNome": "Administração",
+    "salaNome": "Almoxarifado Central",
+    "categoria": "Equipamento",
+    "status": "pendente",
+    "estadoConservacao": "regular"
+  },
+  {
+    "numeroPatrimonio": "PAT-025",
+    "descricao": "Carrinho de transporte de carga",
+    "secretariaNome": "Administração",
+    "salaNome": "Almoxarifado Central",
+    "categoria": "Equipamento",
+    "status": "conferido",
+    "estadoConservacao": "ruim",
+    "observacoes": "Roda traseira quebrada"
+  },
+  {
+    "numeroPatrimonio": "PAT-026",
+    "descricao": "Telefone IP Grandstream",
+    "secretariaNome": "Administração",
+    "salaNome": "Sala 302",
+    "categoria": "Telefonia",
+    "status": "pendente",
+    "estadoConservacao": "bom"
+  },
+  {
+    "numeroPatrimonio": "PAT-027",
+    "descricao": "Desktop Lenovo ThinkCentre M70",
+    "secretariaNome": "Educação",
+    "salaNome": "Laboratório de Informática",
+    "categoria": "Computador",
+    "status": "conferido",
+    "estadoConservacao": "bom"
+  },
+  {
+    "numeroPatrimonio": "PAT-028",
+    "descricao": "Desktop Lenovo ThinkCentre M70",
+    "secretariaNome": "Educação",
+    "salaNome": "Laboratório de Informática",
+    "categoria": "Computador",
+    "status": "conferido",
+    "estadoConservacao": "bom"
+  },
+  {
+    "numeroPatrimonio": "PAT-029",
+    "descricao": "Desktop Lenovo ThinkCentre M70",
+    "secretariaNome": "Educação",
+    "salaNome": "Laboratório de Informática",
+    "categoria": "Computador",
+    "status": "pendente",
+    "estadoConservacao": "regular",
+    "observacoes": "Teclado com teclas faltando"
+  },
+  {
+    "numeroPatrimonio": "PAT-030",
+    "descricao": "Lousa digital interativa",
+    "secretariaNome": "Educação",
+    "salaNome": "Laboratório de Informática",
+    "categoria": "Equipamento",
+    "status": "conferido",
+    "estadoConservacao": "novo"
+  },
+  {
+    "numeroPatrimonio": "PAT-031",
+    "descricao": "Notebook Acer Aspire 5",
+    "secretariaNome": "Educação",
+    "salaNome": "Diretoria de Ensino",
+    "categoria": "Notebook",
+    "status": "pendente",
+    "estadoConservacao": "bom"
+  },
+  {
+    "numeroPatrimonio": "PAT-032",
+    "descricao": "Projetor BenQ MS560",
+    "secretariaNome": "Educação",
+    "salaNome": "Sala de Reuniões da Educação",
+    "categoria": "Projetor",
+    "status": "conferido",
+    "estadoConservacao": "bom"
+  },
+  {
+    "numeroPatrimonio": "PAT-033",
+    "descricao": "Tela de projeção retrátil",
+    "secretariaNome": "Educação",
+    "salaNome": "Sala de Reuniões da Educação",
+    "categoria": "Equipamento",
+    "status": "nao_localizado",
+    "estadoConservacao": "regular"
+  },
+  {
+    "numeroPatrimonio": "PAT-034",
+    "descricao": "Armário de madeira 2 portas",
+    "secretariaNome": "Educação",
+    "salaNome": "Diretoria de Ensino",
+    "categoria": "Móvel",
+    "status": "conferido",
+    "estadoConservacao": "bom"
+  },
+  {
+    "numeroPatrimonio": "PAT-035",
+    "descricao": "Maca clínica estofada",
+    "secretariaNome": "Saúde",
+    "salaNome": "Consultório 1 UBS Centro",
+    "categoria": "Equipamento médico",
+    "status": "conferido",
+    "estadoConservacao": "bom"
+  },
+  {
+    "numeroPatrimonio": "PAT-036",
+    "descricao": "Esfigmomanômetro digital",
+    "secretariaNome": "Saúde",
+    "salaNome": "Consultório 1 UBS Centro",
+    "categoria": "Equipamento médico",
+    "status": "conferido",
+    "estadoConservacao": "novo"
+  },
+  {
+    "numeroPatrimonio": "PAT-037",
+    "descricao": "Refrigerador para vacinas 280L",
+    "secretariaNome": "Saúde",
+    "salaNome": "Farmácia UBS Centro",
+    "categoria": "Equipamento médico",
+    "status": "conferido",
+    "estadoConservacao": "bom",
+    "observacoes": "Equipamento crítico: manter ligado"
+  },
+  {
+    "numeroPatrimonio": "PAT-038",
+    "descricao": "Desktop Dell Vostro",
+    "secretariaNome": "Saúde",
+    "salaNome": "Recepção UBS Centro",
+    "categoria": "Computador",
+    "status": "pendente",
+    "estadoConservacao": "regular"
+  },
+  {
+    "numeroPatrimonio": "PAT-039",
+    "descricao": "Impressora térmica Elgin",
+    "secretariaNome": "Saúde",
+    "salaNome": "Recepção UBS Centro",
+    "categoria": "Impressora",
+    "status": "conferido",
+    "estadoConservacao": "bom"
+  },
+  {
+    "numeroPatrimonio": "PAT-040",
+    "descricao": "Cadeira de espera 3 lugares",
+    "secretariaNome": "Saúde",
+    "salaNome": "Recepção UBS Centro",
+    "categoria": "Móvel",
+    "status": "conferido",
+    "estadoConservacao": "ruim",
+    "observacoes": "Assento central quebrado"
+  },
+  {
+    "numeroPatrimonio": "PAT-041",
+    "descricao": "Estante de aço 6 prateleiras",
+    "secretariaNome": "Saúde",
+    "salaNome": "Farmácia UBS Centro",
+    "categoria": "Móvel",
+    "status": "pendente",
+    "estadoConservacao": "bom"
+  },
+  {
+    "numeroPatrimonio": "PAT-042",
+    "descricao": "Gerador a diesel Toyama 6kVA",
+    "secretariaNome": "Obras e Serviços Públicos",
+    "salaNome": "Garagem de Máquinas",
+    "categoria": "Equipamento",
+    "status": "conferido",
+    "estadoConservacao": "regular"
+  },
+  {
+    "numeroPatrimonio": "PAT-043",
+    "descricao": "Roçadeira Stihl FS 220",
+    "secretariaNome": "Obras e Serviços Públicos",
+    "salaNome": "Garagem de Máquinas",
+    "categoria": "Ferramenta",
+    "status": "pendente",
+    "estadoConservacao": "bom"
+  },
+  {
+    "numeroPatrimonio": "PAT-044",
+    "descricao": "Compactador de solo",
+    "secretariaNome": "Obras e Serviços Públicos",
+    "salaNome": "Garagem de Máquinas",
+    "categoria": "Ferramenta",
+    "status": "nao_localizado",
+    "estadoConservacao": "regular",
+    "observacoes": "Pode estar em obra externa"
+  },
+  {
+    "numeroPatrimonio": "PAT-045",
+    "descricao": "Notebook Dell Inspiron 15",
+    "secretariaNome": "Obras e Serviços Públicos",
+    "salaNome": "Escritório de Obras",
+    "categoria": "Notebook",
+    "status": "conferido",
+    "estadoConservacao": "bom"
+  },
+  {
+    "numeroPatrimonio": "PAT-046",
+    "descricao": "Plotter HP DesignJet T230",
+    "secretariaNome": "Obras e Serviços Públicos",
+    "salaNome": "Escritório de Obras",
+    "categoria": "Impressora",
+    "status": "conferido",
+    "estadoConservacao": "bom"
+  },
+  {
+    "numeroPatrimonio": "PAT-047",
+    "descricao": "Trena a laser Bosch GLM 50",
+    "secretariaNome": "Obras e Serviços Públicos",
+    "salaNome": "Escritório de Obras",
+    "categoria": "Ferramenta",
+    "status": "pendente",
+    "estadoConservacao": "novo"
+  },
+  {
+    "numeroPatrimonio": "PAT-048",
+    "descricao": "Betoneira 400L",
+    "secretariaNome": "Obras e Serviços Públicos",
+    "salaNome": "Garagem de Máquinas",
+    "categoria": "Equipamento",
+    "status": "conferido",
+    "estadoConservacao": "inservivel",
+    "observacoes": "Motor queimado, aguardando baixa"
+  },
+  {
+    "numeroPatrimonio": "PAT-049",
+    "descricao": "Totem de autoatendimento",
+    "secretariaNome": "Turismo e Cultura",
+    "salaNome": "Centro de Informações Turísticas",
+    "categoria": "Equipamento",
+    "status": "pendente",
+    "estadoConservacao": "regular"
+  },
+  {
+    "numeroPatrimonio": "PAT-050",
+    "descricao": "Balcão de atendimento",
+    "secretariaNome": "Turismo e Cultura",
+    "salaNome": "Centro de Informações Turísticas",
+    "categoria": "Móvel",
+    "status": "conferido",
+    "estadoConservacao": "bom"
   }
 ]

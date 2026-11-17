@@ -1,0 +1,64 @@
+# Padrão: só a API sobe em contêiner e o banco é o MongoDB Atlas (MONGO_URI no .env.docker).
+# Banco local (sem internet): docker compose --profile mongo-local up -d
+#   e use MONGO_URI=mongodb://mongo:27017/inventario?replicaSet=rs0 no .env.docker
+
+services:
+  # ---------- Banco de dados local (opcional) ----------
+  mongo:
+    image: mongo:8
+    profiles: ["mongo-local"]
+    container_name: inventario-mongo
+    restart: unless-stopped
+    # Replica set de um nó: necessário porque a API usa transações (startSession)
+    command: ["--replSet", "rs0", "--bind_ip_all"]
+    volumes:
+      - mongo-data:/data/db
+    # Porta publicada só em 127.0.0.1: acessível pelo Compass/seed na própria máquina,
+    # mas não pela rede. Remova este bloco para isolar o banco completamente.
+    ports:
+      - "127.0.0.1:27017:27017"
+    healthcheck:
+      # Inicia o replica set na primeira subida e depois só confirma que está ok
+      test: >
+        mongosh --quiet --eval "try { rs.status().ok } catch (e) { rs.initiate({_id: 'rs0', members: [{_id: 0, host: 'mongo:27017'}]}).ok }"
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 20s
+    networks:
+      - inventario-net
+
+  # ---------- API REST ----------
+  api:
+    build: .
+    image: inventario-api:latest
+    container_name: inventario-api
+    restart: unless-stopped
+    env_file:
+      - .env.docker
+    environment:
+      # MONGO_URI vem do .env.docker (Atlas ou mongo local)
+      FIREBASE_SERVICE_ACCOUNT_PATH: /app/credenciais/firebase-service-account.json
+      UPLOADS_DIR: /app/uploads
+      PORT: "3000"
+    ports:
+      - "3000:3000"
+    volumes:
+      # Credencial do Firebase: montada somente leitura, nunca entra na imagem
+      - ./credenciais/firebase-service-account.json:/app/credenciais/firebase-service-account.json:ro
+      # Fotos dos patrimônios persistem fora do contêiner
+      - uploads-data:/app/uploads
+    depends_on:
+      mongo:
+        condition: service_healthy
+        required: false # só espera o mongo quando o perfil mongo-local estiver ativo
+    networks:
+      - inventario-net
+
+volumes:
+  mongo-data:
+  uploads-data:
+
+networks:
+  inventario-net:
+    driver: bridge

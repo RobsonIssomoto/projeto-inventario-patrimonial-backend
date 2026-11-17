@@ -6,3 +6,6 @@ dist/
 .env.*.local
 credenciais/
 firebase-service-account.json
+# Docker
+.env.docker
+uploads/
