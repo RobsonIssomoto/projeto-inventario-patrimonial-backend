@@ -143,8 +143,7 @@
       "nome": "Administrador",
       "email": "admin@email.com",
       "perfil": "administrador",
-      "secretariaNome": "Tecnologia da Informação",
-      "manterSenha": true
+      "secretariaNome": "Tecnologia da Informação"
     },
     {
       "nome": "Gerente TI",
