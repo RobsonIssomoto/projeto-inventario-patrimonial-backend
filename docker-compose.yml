@@ -47,7 +47,7 @@ services:
       # Credencial do Firebase: montada somente leitura, nunca entra na imagem
       - ./credenciais/firebase-service-account.json:/app/credenciais/firebase-service-account.json:ro
       # Fotos dos patrimônios persistem fora do contêiner
-      - uploads-data:/app/uploads
+      - ./uploads:/app/uploads
     depends_on:
       mongo:
         condition: service_healthy
