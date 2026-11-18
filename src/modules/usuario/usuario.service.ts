@@ -5,7 +5,9 @@ import { Types } from "mongoose";
 import Secretaria from "../secretaria/secretaria.model.js";
 
 class UsuarioService {
-  public async create(data: ICreateUsuarioDTO): Promise<{ usuario: IUsuario; linkDefinicaoSenha: string; emailEnviado: boolean }> {
+  public async create(
+    data: ICreateUsuarioDTO,
+  ): Promise<{ usuario: IUsuario; linkDefinicaoSenha: string | null; emailEnviado: boolean }> {
     const secretaria = await this.validarSecretaria(data.secretaria);
 
     const usuarioFirebase = await firebaseAuth.createUser({
@@ -23,10 +25,9 @@ class UsuarioService {
       ativo: data.ativo ?? true,
     });
 
-    const linkDefinicaoSenha = await firebaseAuth.generatePasswordResetLink(data.email);
-
-    //o Admin SDK só gera o link; o envio do e-mail é feito pela API REST do Firebase
     const emailEnviado = await this.enviarEmailDefinicaoSenha(data.email);
+
+    const linkDefinicaoSenha = emailEnviado ? null : await firebaseAuth.generatePasswordResetLink(data.email);
 
     return {
       usuario,
