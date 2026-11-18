@@ -139,6 +139,7 @@ class PatrimonioService {
         usuario: usuarioId,
         patrimonio: patrimonio._id,
         tipo: "atualizacao_localizacao",
+        status: "concluida",
         secretaria: patrimonio.secretaria,
         sala: data.sala,
         dataHora: new Date(),
